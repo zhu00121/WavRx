@@ -68,7 +68,7 @@ augmentation: !new:speechbrain.lobes.augment.TimeDomainSpecAugment
 
 
 # model hyper-parameters
-model: !new:sv_pt.SV_clf
+model: !new:model.SV_clf
     clf_input_shape: [null, null, !ref <emb_dim>]
     clf_activation: !name:torch.nn.LeakyReLU
     clf_lin_blocks: 1

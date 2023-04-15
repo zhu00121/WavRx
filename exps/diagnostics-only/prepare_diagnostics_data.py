@@ -3,6 +3,7 @@ TODO: add description
 """
 
 import os, glob
+import random
 import pandas as pd
 import json
 from path import Path
@@ -13,10 +14,14 @@ import torchaudio
 logger = logging.getLogger(__name__)
 
 
-def prepare_diagnostics_data(
+def prepare_data(
     wav_folder:str,
     metadata_path:str,
-    manifest_path:str
+    manifest_train_path:str,
+    manifest_valid_path:str,
+    manifest_test_path:str,
+    ratio:list = [0.7,0.2,0.1],
+    random_seed:int = 2023
     ):
 
     """
@@ -28,8 +33,8 @@ def prepare_diagnostics_data(
     """
 
     # Check if this phase is already done (if so, skip it)
-    if skip(manifest_path):
-        logger.info("Manifest file preparation completed in previous run, skipping.")
+    if skip(manifest_train_path, manifest_valid_path, manifest_test_path):
+        logger.info("Manifest files preparation completed in previous run, skipping.")
         return
     
     if not os.path.exists(metadata_path):
@@ -41,14 +46,18 @@ def prepare_diagnostics_data(
 
     # List files and create manifest from list
     logger.info(
-        f"Creating {manifest_path}"
+        f"Creating {manifest_train_path}, {manifest_valid_path}, and {manifest_test_path}"
     )
     
-    # Creating json files
-    create_json(wav_folder, metadata_path, manifest_path)
+    # Creating json files for train, valid, and test all at once
+    create_json(wav_folder, 
+                metadata_path, 
+                [manifest_train_path,manifest_valid_path,manifest_test_path],
+                ratio,
+                random_seed)
 
 
-def create_json(wav_folder:str, metadata_path:str, manifest_path:str):
+def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, split:str, ratio:list, random_seed:int):
     """
     Creates the manifest file given the metadata file.
     """
@@ -58,24 +67,65 @@ def create_json(wav_folder:str, metadata_path:str, manifest_path:str):
     # Calculate total number of audio files
     wav_files = glob.glob(os.path.join(wav_folder, "/*.wav"), recursive=True)
     print("Total wav audio files {} in the audio folder".format(len(wav_files)))
-
     # Sanity check if number of files in metadata is in consistency with number of files in the audio folder
     assert len(wav_files) == df_metadata.shape[0], "Number of audio files in the folder is not consistent with number of samples in the metadata"
 
+    # Split the metadata file into train,valid,and test files
+    df_train, df_valid, df_test = split_metadata(df_metadata, ratio, random_seed)
+    dataframe_to_json(df_train,manifest_paths[0])
+    dataframe_to_json(df_valid,manifest_paths[1])
+    dataframe_to_json(df_test,manifest_paths[2])
+
+    logger.info(f"{manifest_paths} successfully created!")
+
+
+def split_metadata(metadata_df, ratio, random_seed):
+    """
+    User-independent split with each split contains similar symptomatic/non-symptomatic ratio
+    """
+    
+    mask_1 = metadata_df['Symptom-label'] == 'symptomatic'
+    mask_2 = metadata_df['Symptom-label'] == 'non'
+    uid_pos = list(metadata_df[mask_1]['Uid'].unique())
+    uid_neg = list(metadata_df[mask_2]['Uid'].unique())
+    uid_pos = list(set(uid_pos).difference(set(uid_neg)))
+    
+    random.Random(random_seed).shuffle(uid_pos)
+    random.Random(random_seed).shuffle(uid_neg)
+
+    train_spk_pos = uid_pos[:int(len(uid_pos)*ratio[0])]
+    train_spk_neg = uid_neg[:int(len(uid_neg)**ratio[0])]
+    valid_spk_pos = uid_pos[int(len(uid_pos)**ratio[0]):int(len(uid_pos)*ratio[1])]
+    valid_spk_neg = uid_neg[int(len(uid_neg)**ratio[0]):int(len(uid_pos)*ratio[1])]
+    test_spk_pos = uid_pos[int(len(uid_pos)*ratio[1]):]
+    test_spk_neg = uid_neg[int(len(uid_neg)*ratio[1]):]
+
+    train_spk = train_spk_pos + train_spk_neg
+    valid_spk = valid_spk_pos + valid_spk_neg
+    test_spk = test_spk_pos + test_spk_neg
+
+    train_df = metadata_df[metadata_df['Uid'].isin(train_spk)]
+    valid_df = metadata_df[metadata_df['Uid'].isin(valid_spk)]
+    test_df = metadata_df[metadata_df['Uid'].isin(test_spk)]
+
+    return train_df, valid_df, test_df
+
+
+def dataframe_to_json(df,save_path):
     # we now build JSON examples 
     examples = {}
-    for _, row in df_metadata.iterrows():
+    for _, row in df.iterrows():
         utt_id = Path(row['voice-path-new']).stem # returns the name (without extension) E.g., '00000','00010'
         examples[utt_id] = {"ID": utt_id,
                             "file_path": row['voice-path-new'], 
                             "symptom-label": row['Symptom-label'],
                             "symptom": row['Symptoms'],
                             "length": torchaudio.info(row['voice-path-new']).num_frames}
-
-    with open(manifest_path, "w") as f:
+        
+    with open(save_path, "w") as f:
         json.dump(examples, f, indent=4)
 
-    logger.info(f"{manifest_path} successfully created!")
+    return examples
 
 
 def skip(*filenames):

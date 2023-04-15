@@ -209,28 +209,29 @@ def dataio_prep(hparams):
     datasets = {}
     data_info = {
         "train": hparams["train_annotation"],
-        "valid": hparams["valid_annotation"]
+        "valid": hparams["valid_annotation"],
+        "test": hparams["test_annotation"]
     }
 
-    hparams["dataloader_options"]["shuffle"] = False
+    hparams["dataloader_options"]["shuffle"] = True
 
     for dataset in data_info:
-        datasets[dataset] = sb.dataio.dataset.DynamicItemDataset.from_csv(
-            csv_path=data_info[dataset],
+        datasets[dataset] = sb.dataio.dataset.DynamicItemDataset.from_json(
+            json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
             dynamic_items=[audio_pipeline, label_pipeline],
-            output_keys=["id", "signal", "file_path", "label_encoded", "duration"],
+            output_keys=["id", "signal", "file_path", "symptom_label_encoded", "duration", "Symptoms","Covid-Tested"],
         )
 
-    # # Load or compute the label encoder (with multi-GPU DDP support)
-    # # Please, take a look into the lab_enc_file to see the label to index
-    # # mapping.
-    # lab_enc_file = os.path.join(hparams["save_folder"], "label_encoder.txt")
-    # label_encoder.load_or_create(
-    #     path=lab_enc_file,
-    #     from_didatasets=[datasets["train"]],
-    #     output_key="spk_id",
-    # )
+    # Load or compute the label encoder (with multi-GPU DDP support)
+    # Please, take a look into the lab_enc_file to see the label to index
+    # mapping.
+    lab_enc_file = os.path.join(hparams["save_folder"], "label_encoder.txt")
+    label_encoder.load_or_create(
+        path=lab_enc_file,
+        from_didatasets=[datasets["train"]],
+        output_key="symptom",
+    )
 
     return datasets
 
@@ -258,22 +259,23 @@ if __name__ == "__main__":
     # Data preparation, to be run on only one process.
     if not hparams["skip_prep"]:
         sb.utils.distributed.run_on_main(
-            prepare_deepfake_track12,
+            prepare_data,
             kwargs={
-                "train_wav_folder": hparams["train_wav_folder"],
-                "dev_wav_folder": hparams["dev_wav_folder"],
-                "train_txt_path": hparams["train_txt_path"],
-                "dev_txt_path": hparams["dev_txt_path"],
-                "train_csv_save_path": hparams["train_annotation"],
-                "dev_csv_save_path": hparams["valid_annotation"]
+                "wav_folder": hparams["wav_folder"],
+                "metadata_path": hparams["metadata_path"],
+                "manifest_train_path": hparams["manifest_train_path"],
+                "manifest_valid_path": hparams["manifest_valid_path"],
+                "manifest_test_path": hparams["manifest_test_path"],
+                "ratio": hparams["ratio"],
+                "random_seed": hparams["random_seed"]
             },
         )
 
-    # Create dataset objects "train" and "valid"
+    # Create dataset objects
     datasets = dataio_prep(hparams)
 
     # Initialize the Brain object to prepare for mask training.
-    brain = XVBrain(
+    brain = DiagnosticsBrain(
         modules=hparams["modules"],
         opt_class=hparams["opt_class"],
         hparams=hparams,

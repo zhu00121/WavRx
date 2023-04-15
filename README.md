@@ -1,4 +1,4 @@
-### Disentangle health-related information from speaker embeddings
+### A framework to disentangle health-related information from speaker embeddings
 
 Speaker embeddings are used to recognize the user identity, which may contain different para-linguistic attributes, such as prosody, emotion, phonation, articulation, etc. We hypothesize that:
 

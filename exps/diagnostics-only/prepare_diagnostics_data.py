@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 def prepare_data(
     wav_folder:str,
+    audio_archive_path:str,
     metadata_path:str,
     manifest_train_path:str,
     manifest_valid_path:str,
@@ -42,7 +43,7 @@ def prepare_data(
 
     # If the wav folder does not exist, unzip the audio zip file
     if not check_folders(wav_folder): 
-        unzip_audio_file(os.path.dirname(wav_folder))
+        unzip_audio_file(wav_folder, audio_archive_path)
 
     # List files and create manifest from list
     logger.info(
@@ -65,7 +66,7 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, split:st
     # Load metadata file
     df_metadata = pd.read_csv(metadata_path, header=True, sep=';')
     # Calculate total number of audio files
-    wav_files = glob.glob(os.path.join(wav_folder, "/*.wav"), recursive=True)
+    wav_files = glob.glob(os.path.join(wav_folder, "EN/*.wav"), recursive=True)
     print("Total wav audio files {} in the audio folder".format(len(wav_files)))
     # Sanity check if number of files in metadata is in consistency with number of files in the audio folder
     assert len(wav_files) == df_metadata.shape[0], "Number of audio files in the folder is not consistent with number of samples in the metadata"
@@ -83,7 +84,7 @@ def split_metadata(metadata_df, ratio, random_seed):
     """
     User-independent split with each split contains similar symptomatic/non-symptomatic ratio
     """
-    
+
     mask_1 = metadata_df['Symptom-label'] == 'symptomatic'
     mask_2 = metadata_df['Symptom-label'] == 'non'
     uid_pos = list(metadata_df[mask_1]['Uid'].unique())
@@ -153,11 +154,10 @@ def check_folders(*folders):
     return True
 
 
-def unzip_audio_file(destination):
+def unzip_audio_file(destination, audio_archive_path):
     """
     Unzip the compressed audio folder.
     """
-    audio_archive = os.path.join(destination, "EN.zip")
-    if not os.path.exists(audio_archive):
+    if not os.path.exists(audio_archive_path):
         raise ValueError("Audio zip file not found. Please refer to prep.ipynb first to prepare the zip file.")
-    shutil.unpack_archive(audio_archive, destination) # this will create a folder called 'EN' inside of the 'wav' folder
+    shutil.unpack_archive(audio_archive_path, destination) # this will create a folder called 'EN' inside of the 'wav' folder

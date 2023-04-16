@@ -59,7 +59,7 @@ def prepare_data(
                 random_seed)
 
 
-def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, split:str, ratio:list, random_seed:int):
+def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:list, random_seed:int):
     """
     Creates the manifest file given the metadata file.
     """

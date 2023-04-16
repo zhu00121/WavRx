@@ -292,9 +292,9 @@ if __name__ == "__main__":
         valid_loader_kwargs=hparams["dataloader_options"],
     )
 
-    # # Load the best checkpoint for evaluation
-    # test_stats = spk_id_brain.evaluate(
-    #     test_set=datasets["test"],
-    #     min_key="error",
-    #     test_loader_kwargs=hparams["dataloader_options"],
-    # )
+    # Load the best checkpoint for evaluation
+    test_stats = DiagnosticsBrain.evaluate(
+        test_set=datasets["test"],
+        min_key="error",
+        test_loader_kwargs=hparams["dataloader_options"],
+    )

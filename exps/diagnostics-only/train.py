@@ -186,6 +186,7 @@ def dataio_prep(hparams):
         This is done on the CPU in the `collate_fn`."""
         
         signal, sr_og = torchaudio.load(file_path)
+        print(signal.shape)
         if sr_og != 16000:
             signal = F.resample(signal,sr_og,new_freq=16000,
                                 lowpass_filter_width=64,

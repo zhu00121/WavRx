@@ -72,7 +72,6 @@ class DiagnosticsBrain(sb.Brain):
         loss : torch.Tensor
             A one-element tensor used for backpropagating the gradient.
         """
-        print(batch.symptom_label_encoded)
         _, lens = batch.signal
         lab, _ = batch.symptom_label_encoded
         lab = lab.to(self.device)
@@ -199,7 +198,6 @@ def dataio_prep(hparams):
                                 )
         signal  = signal.squeeze()
         duration = len(signal)
-
         return signal, duration
 
     # Define label pipeline:
@@ -207,7 +205,6 @@ def dataio_prep(hparams):
     @sb.utils.data_pipeline.provides("symptom_label_encoded")
     def label_pipeline(label):
         """Defines the pipeline to process the input label."""
-        yield label
         label_encoder.lab2ind = {'non':0, 'symptomatic':1}
         label_encoded = label_encoder.encode_label_torch(label)
         yield label_encoded

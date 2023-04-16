@@ -262,6 +262,7 @@ if __name__ == "__main__":
             prepare_data,
             kwargs={
                 "wav_folder": hparams["wav_folder"],
+                "audio_archive_path": hparams["audio_archive_path"],
                 "metadata_path": hparams["metadata_path"],
                 "manifest_train_path": hparams["manifest_train_path"],
                 "manifest_valid_path": hparams["manifest_valid_path"],

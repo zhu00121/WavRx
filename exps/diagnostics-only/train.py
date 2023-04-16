@@ -224,15 +224,15 @@ def dataio_prep(hparams):
             output_keys=["id", "signal", "duration", "file_path", "symptom_label_encoded", "duration", "Symptoms","Covid-Tested"],
         )
 
-    # Load or compute the label encoder (with multi-GPU DDP support)
-    # Please, take a look into the lab_enc_file to see the label to index
-    # mapping.
-    lab_enc_file = os.path.join(hparams["save_folder"], "label_encoder.txt")
-    label_encoder.load_or_create(
-        path=lab_enc_file,
-        from_didatasets=[datasets["train"]],
-        output_key="symptom",
-    )
+    # # Load or compute the label encoder (with multi-GPU DDP support)
+    # # Please, take a look into the lab_enc_file to see the label to index
+    # # mapping.
+    # lab_enc_file = os.path.join(hparams["save_folder"], "label_encoder.txt")
+    # label_encoder.load_or_create(
+    #     path=lab_enc_file,
+    #     from_didatasets=[datasets["train"]],
+    #     output_key="symptom",
+    # )
 
     return datasets
 

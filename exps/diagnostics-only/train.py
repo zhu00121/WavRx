@@ -179,12 +179,12 @@ def dataio_prep(hparams):
     label_encoder = sb.dataio.encoder.CategoricalEncoder()
 
     # Define audio pipeline
-    @sb.utils.data_pipeline.takes("file_path")
+    @sb.utils.data_pipeline.takes("file_path", "length")
     @sb.utils.data_pipeline.provides("signal","duration")
-    def audio_pipeline(file_path):
+    def audio_pipeline(file_path, length):
         """Load the signal, and pass it and its length to the corruption class.
         This is done on the CPU in the `collate_fn`."""
-        duration = torchaudio.info(file_path).num_frames
+        duration = length
         signal, sr_og = torchaudio.load(file_path)
         if sr_og != 16000:
             signal = F.resample(signal,sr_og,resample_rate=16000,
@@ -196,14 +196,14 @@ def dataio_prep(hparams):
         return signal, duration
 
     # Define label pipeline:
-    @sb.utils.data_pipeline.takes("symptom-label", "Symptoms", "Covid-Tested")
-    @sb.utils.data_pipeline.provides("symptom_label_encoded", "Symptoms", "Covid-Tested")
-    def label_pipeline(label, symptom, covid):
+    @sb.utils.data_pipeline.takes("symptom-label")
+    @sb.utils.data_pipeline.provides("symptom_label_encoded")
+    def label_pipeline(label):
         """Defines the pipeline to process the input label."""
         yield label
         label_encoder.lab2ind = {'non':0, 'symptomatic':1}
         label_encoded = label_encoder.encode_label_torch(label)
-        yield label_encoded, symptom, covid
+        yield label_encoded
 
     # Define datasets. We also connect the dataset with the data processing
     # functions defined above.
@@ -221,7 +221,7 @@ def dataio_prep(hparams):
             json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
             dynamic_items=[audio_pipeline, label_pipeline],
-            output_keys=["id", "signal", "duration", "file_path", "symptom_label_encoded", "duration", "Symptoms","Covid-Tested"],
+            output_keys=["id", "signal", "duration", "file_path", "symptom_label_encoded", "symptom"],
         )
 
     # # Load or compute the label encoder (with multi-GPU DDP support)

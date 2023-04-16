@@ -180,10 +180,11 @@ def dataio_prep(hparams):
 
     # Define audio pipeline
     @sb.utils.data_pipeline.takes("file_path")
-    @sb.utils.data_pipeline.provides("signal")
+    @sb.utils.data_pipeline.provides("signal","duration")
     def audio_pipeline(file_path):
         """Load the signal, and pass it and its length to the corruption class.
         This is done on the CPU in the `collate_fn`."""
+        duration = torchaudio.info(file_path).num_frames
         signal, sr_og = torchaudio.load(file_path)
         if sr_og != 16000:
             signal = F.resample(signal,sr_og,resample_rate=16000,
@@ -192,7 +193,7 @@ def dataio_prep(hparams):
                                 resampling_method="sinc_interp_kaiser",
                                 beta=14.769656459379492
                                 )
-        return signal
+        return signal, duration
 
     # Define label pipeline:
     @sb.utils.data_pipeline.takes("symptom-label")
@@ -220,7 +221,7 @@ def dataio_prep(hparams):
             json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
             dynamic_items=[audio_pipeline, label_pipeline],
-            output_keys=["id", "signal", "file_path", "symptom_label_encoded", "duration", "Symptoms","Covid-Tested"],
+            output_keys=["id", "signal", "duration", "file_path", "symptom_label_encoded", "duration", "Symptoms","Covid-Tested"],
         )
 
     # Load or compute the label encoder (with multi-GPU DDP support)

@@ -124,6 +124,9 @@ def dataframe_to_json(df,save_path):
                             "symptom": row['Symptoms'],
                             "length": torchaudio.info(row['voice-path-new']).num_frames}
         
+    if not os.path.exists(os.path.dirname(save_path)):
+        Path(os.path.dirname(save_path)).mkdir(parents=True)
+
     with open(save_path, "w") as f:
         json.dump(examples, f, indent=4)
 

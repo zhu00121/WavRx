@@ -44,6 +44,7 @@ def prepare_data(
     # If the wav folder does not exist, unzip the audio zip file
     if not check_folders(wav_folder): 
         unzip_audio_file(wav_folder, audio_archive_path)
+    else: print('Found extracted audio files. Skip unzipping.')
 
     # List files and create manifest from list
     logger.info(
@@ -66,7 +67,7 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, split:st
     # Load metadata file
     df_metadata = pd.read_csv(metadata_path, header=True, sep=';')
     # Calculate total number of audio files
-    wav_files = glob.glob(os.path.join(wav_folder, "EN/*.wav"), recursive=True)
+    wav_files = glob.glob(os.path.join(wav_folder, "*.wav"), recursive=True)
     print("Total wav audio files {} in the audio folder".format(len(wav_files)))
     # Sanity check if number of files in metadata is in consistency with number of files in the audio folder
     assert len(wav_files) == df_metadata.shape[0], "Number of audio files in the folder is not consistent with number of samples in the metadata"
@@ -160,4 +161,4 @@ def unzip_audio_file(destination, audio_archive_path):
     """
     if not os.path.exists(audio_archive_path):
         raise ValueError("Audio zip file not found. Please refer to prep.ipynb first to prepare the zip file.")
-    shutil.unpack_archive(audio_archive_path, destination) # this will create a folder called 'EN' inside of the 'wav' folder
+    shutil.unpack_archive(os.path.dirname(audio_archive_path), destination) # this will create a folder called 'EN' inside of the 'wav' folder

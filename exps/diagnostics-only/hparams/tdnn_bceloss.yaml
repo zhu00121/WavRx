@@ -9,7 +9,7 @@ data_folder: ./data_og
 dataset: Cambridge
 
 # original audio and label file paths
-wav_folder: !ref <data_folder>/<dataset>/wav
+wav_folder: !ref <data_folder>/<dataset>/wav/EN
 audio_archive_path: !ref <wav_folder>/EN.zip
 metadata_path: !ref <data_folder>/<dataset>/metadata/EN-metadata.csv
 

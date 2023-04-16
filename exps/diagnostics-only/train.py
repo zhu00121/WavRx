@@ -72,7 +72,7 @@ class DiagnosticsBrain(sb.Brain):
         loss : torch.Tensor
             A one-element tensor used for backpropagating the gradient.
         """
-
+        print(batch.symptom_label_encoded)
         _, lens = batch.signal
         lab, _ = batch.symptom_label_encoded
         lab = lab.to(self.device)

@@ -74,7 +74,7 @@ class DiagnosticsBrain(sb.Brain):
         """
 
         _, lens = batch.signal
-        lab, _ = batch.label_encoded
+        lab, _ = batch.symptom_label_encoded
         lab = lab.to(self.device)
 
         # Concatenate labels (due to data augmentation)
@@ -189,7 +189,7 @@ def dataio_prep(hparams):
         # handle multi-channel
         if signal.shape[0] > 1:
             signal = torch.mean(signal, axis=0)
-        print(signal.shape)
+
         if sr_og != 16000:
             signal = F.resample(signal,sr_og,new_freq=16000,
                                 lowpass_filter_width=64,
@@ -199,7 +199,7 @@ def dataio_prep(hparams):
                                 )
         signal  = signal.squeeze()
         duration = len(signal)
-        print(signal.shape)
+
         return signal, duration
 
     # Define label pipeline:

@@ -193,6 +193,7 @@ def dataio_prep(hparams):
                                 resampling_method="sinc_interp_kaiser",
                                 beta=14.769656459379492
                                 )
+        signal  = signal.squeeze()
         duration = len(signal)
         return signal, duration
 

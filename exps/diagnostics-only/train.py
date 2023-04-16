@@ -264,9 +264,9 @@ if __name__ == "__main__":
                 "wav_folder": hparams["wav_folder"],
                 "audio_archive_path": hparams["audio_archive_path"],
                 "metadata_path": hparams["metadata_path"],
-                "manifest_train_path": hparams["manifest_train_path"],
-                "manifest_valid_path": hparams["manifest_valid_path"],
-                "manifest_test_path": hparams["manifest_test_path"],
+                "manifest_train_path": hparams["train_annotation"],
+                "manifest_valid_path": hparams["valid_annotation"],
+                "manifest_test_path": hparams["test_annotation"],
                 "ratio": hparams["ratio"],
                 "random_seed": hparams["random_seed"]
             },

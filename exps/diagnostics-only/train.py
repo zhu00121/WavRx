@@ -186,6 +186,9 @@ def dataio_prep(hparams):
         This is done on the CPU in the `collate_fn`."""
         
         signal, sr_og = torchaudio.load(file_path)
+        # handle multi-channel
+        if signal.shape[0] > 1:
+            signal = torch.mean(signal, axis=0)
         print(signal.shape)
         if sr_og != 16000:
             signal = F.resample(signal,sr_og,new_freq=16000,
@@ -196,6 +199,7 @@ def dataio_prep(hparams):
                                 )
         signal  = signal.squeeze()
         duration = len(signal)
+        print(signal.shape)
         return signal, duration
 
     # Define label pipeline:

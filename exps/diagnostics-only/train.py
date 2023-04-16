@@ -196,14 +196,14 @@ def dataio_prep(hparams):
         return signal, duration
 
     # Define label pipeline:
-    @sb.utils.data_pipeline.takes("symptom-label")
-    @sb.utils.data_pipeline.provides("symptom_label_encoded")
-    def label_pipeline(label):
+    @sb.utils.data_pipeline.takes("symptom-label", "Symptoms", "Covid-Tested")
+    @sb.utils.data_pipeline.provides("symptom_label_encoded", "Symptoms", "Covid-Tested")
+    def label_pipeline(label, symptom, covid):
         """Defines the pipeline to process the input label."""
         yield label
         label_encoder.lab2ind = {'non':0, 'symptomatic':1}
         label_encoded = label_encoder.encode_label_torch(label)
-        yield label_encoded
+        yield label_encoded, symptom, covid
 
     # Define datasets. We also connect the dataset with the data processing
     # functions defined above.

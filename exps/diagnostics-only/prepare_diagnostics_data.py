@@ -65,7 +65,7 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:li
     """
 
     # Load metadata file
-    df_metadata = pd.read_csv(metadata_path, header=True, sep=';')
+    df_metadata = pd.read_csv(metadata_path, sep=';')
     # Calculate total number of audio files
     wav_files = glob.glob(os.path.join(wav_folder, "*.wav"), recursive=True)
     print("Total wav audio files {} in the audio folder".format(len(wav_files)))

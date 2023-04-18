@@ -41,9 +41,9 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 
 # Training Parameters
 sample_rate: 16000
-number_of_epochs: 2
+number_of_epochs: 20
 batch_size: 16
-lr_start: 0.05
+lr_start: 0.1
 lr_final: 0.001
 n_classes: 1
 emb_dim: 192 # dimensionality of the embeddings

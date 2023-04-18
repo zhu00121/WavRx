@@ -299,7 +299,7 @@ if __name__ == "__main__":
     )
 
     # Load the best checkpoint for evaluation
-    test_stats = DiagnosticsBrain.evaluate(
+    test_stats = brain.evaluate(
         test_set=datasets["test"],
         min_key="error",
         test_loader_kwargs=hparams["dataloader_options"],

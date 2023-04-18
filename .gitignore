@@ -1,2 +1,3 @@
 ./data_og/Cambridge/wav/*.wav
 ./data_og/*.zip
+./pretrain_models

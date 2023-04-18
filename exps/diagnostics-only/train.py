@@ -33,7 +33,7 @@ class DiagnosticsBrain(sb.Brain):
         """Runs all the computation of that transforms the input into the
         output probabilities over the N classes.
         """
-        batch = batch.to('cpu')
+        batch = batch.to(self.device)
         # wavs, _ = self.augment_input(batch.signal, stage)
         wavs, _ = batch.signal
         wavs = wavs.squeeze()

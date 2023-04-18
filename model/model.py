@@ -102,9 +102,9 @@ class SV_clf(nn.Module):
         # Define backbone feature extractor
         assert backbone_choice in ['ECAPA', 'XVECTOR']
         if backbone_choice == 'ECAPA':
-            self.feature_extractor = EncoderClassifier.from_hparams(source=pt_source,run_opts={"device":"cuda"})
+            self.feature_extractor = EncoderClassifier.from_hparams(source=pt_source) # remove ''run_opts={"device":"cuda"}'' to enable generating embeddings on cpu
         elif backbone_choice == 'XVECTOR':
-            self.feature_extractor = EncoderClassifier.from_hparams(source=pt_source,run_opts={"device":"cuda"})
+            self.feature_extractor = EncoderClassifier.from_hparams(source=pt_source)
         
         # TODO: add side information
         # Define side information. Could be 'LFCC', 'MFCC', 'MSF', or any other speech features.
@@ -134,7 +134,8 @@ class SV_clf(nn.Module):
             side_output = self.side_info_extractor(x)
             clf_input = torch.cat([backbone_output, side_output], dim=-1)
         else: clf_input = backbone_output
-        # clf_input = clf_input.to(x.device)
+        
+        clf_input = clf_input.to(x.device) # copy to gpu
         # pass to the MLP classifier for final output
         output = self.clf(clf_input)
 

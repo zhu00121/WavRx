@@ -34,8 +34,7 @@ class DiagnosticsBrain(sb.Brain):
         output probabilities over the N classes.
         """
         batch = batch.to(self.device)
-        # wavs, _ = self.augment_input(batch.signal, stage)
-        wavs, _ = batch.signal
+        wavs, _ = self.augment_input(batch.signal, stage)
         wavs = wavs.squeeze()
         predictions = self.modules.model(wavs)
         return predictions

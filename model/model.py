@@ -144,5 +144,5 @@ class SV_clf(nn.Module):
 # if __name__ == '__main__':
 
 #     clf = SV_clf(clf_input_shape=(5,1,192))
-#     output = clf(torch.randn(5,8000).to('cuda'))
+#     output = clf(torch.randn(5,8000))
 #     print(output.shape)

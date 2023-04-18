@@ -35,6 +35,7 @@ class DiagnosticsBrain(sb.Brain):
         """
         # batch = batch.to(self.device)
         # wavs, _ = self.augment_input(batch.signal, stage)
+        wavs, _ = batch
         wavs = wavs.squeeze()
         predictions = self.modules.model(wavs)
         return predictions

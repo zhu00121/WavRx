@@ -135,7 +135,7 @@ class SV_clf(nn.Module):
             clf_input = torch.cat([backbone_output, side_output], dim=-1)
         else: clf_input = backbone_output
         
-        clf_input = clf_input.to(x.device) # copy to gpu
+        clf_input = clf_input.to('cuda') # copy to gpu
         # pass to the MLP classifier for final output
         output = self.clf(clf_input)
 

@@ -129,15 +129,18 @@ class SV_clf(nn.Module):
     def forward(self,x):
 
         # extract backbone features (and side features)
+        print(x.is_cuda)
         backbone_output = self.feature_extractor.encode_batch(wavs=x, normalize=self.normalize)
         if self.side_info:
             side_output = self.side_info_extractor(x)
             clf_input = torch.cat([backbone_output, side_output], dim=-1)
         else: clf_input = backbone_output
-        
+        print(clf_input.is_cuda)
         clf_input = clf_input.to('cuda') # copy to gpu
+        print(clf_input.is_cuda)
         # pass to the MLP classifier for final output
         output = self.clf(clf_input)
+        print(output.is_cuda)
 
         return output
     

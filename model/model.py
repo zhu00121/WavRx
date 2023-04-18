@@ -124,7 +124,7 @@ class SV_clf(nn.Module):
                               activation = clf_activation,
                               lin_blocks = clf_lin_blocks,
                               lin_neurons = clf_lin_neurons,
-                              out_neurons = clf_out_neurons)
+                              out_neurons = clf_out_neurons).to('cuda')
         
     def forward(self,x):
 

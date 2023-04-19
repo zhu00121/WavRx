@@ -82,7 +82,7 @@ class Classifier(sb.nnet.containers.Sequential):
 class SV_clf(nn.Module):
 
     def __init__(self,
-                clf_input_shape = (5, 1, 192),
+                clf_input_shape,
                 clf_activation = torch.nn.LeakyReLU,
                 clf_lin_blocks = 1,
                 clf_lin_neurons = 100,

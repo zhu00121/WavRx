@@ -140,8 +140,8 @@ class DiagnosticsBrain(sb.Brain):
             metrics = self.error_metrics.summarize() 
             stats = {
                 "loss": stage_loss,
-                "TP": metrics["TP"],
-                "TN": metrics["TN"],
+                "precision": metrics["precision"],
+                "recall": metrics["recall"],
                 "F1": metrics["F-score"],
             }
 
@@ -159,7 +159,7 @@ class DiagnosticsBrain(sb.Brain):
             )
 
             # Save the current checkpoint and delete previous checkpoints, based on F1
-            self.checkpointer.save_and_keep_only(meta=stats, min_keys=["F1"])
+            self.checkpointer.save_and_keep_only(meta=stats, max_keys=["F1"])
 
         # We also write statistics about test data to stdout and to the logfile.
         if stage == sb.Stage.TEST:

@@ -83,7 +83,7 @@ class DiagnosticsBrain(sb.Brain):
 
         # Compute the cost function: BCE for a fake/genuine classification problem
         weight = torch.tensor([1]).to(self.device)
-        loss = sb.nnet.losses.bce_loss(predictions, lab, lens, pos_weight=weight)
+        loss = sb.nnet.losses.bce_loss(predictions, lab, pos_weight=weight)
 
         # Append this batch of losses to the loss metric for easy
         self.loss_metric.append(
@@ -92,7 +92,7 @@ class DiagnosticsBrain(sb.Brain):
 
         # Compute classification error at test time
         if stage != sb.Stage.TRAIN:
-            self.error_metrics.append(batch.id, predictions, lab, lens)
+            self.error_metrics.append(batch.id, predictions, lab)
 
         return loss
 

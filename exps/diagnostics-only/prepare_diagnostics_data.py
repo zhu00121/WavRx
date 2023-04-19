@@ -70,7 +70,7 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:li
     wav_files = glob.glob(os.path.join(wav_folder, "*.wav"), recursive=True)
     print("Total wav audio files {} in the audio folder".format(len(wav_files)))
     # Sanity check if number of files in metadata is in consistency with number of files in the audio folder
-    assert len(wav_files) == df_metadata.shape[0], "Number of audio files in the folder is not consistent with number of samples in the metadata"
+    assert len(wav_files) == df_metadata.shape[0], "Number of audio files wein the folder is not consistent with number of samples in the metadata"
 
     # Split the metadata file into train,valid,and test files
     df_train, df_valid, df_test = split_metadata(df_metadata, ratio, random_seed)

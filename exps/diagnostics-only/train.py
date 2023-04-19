@@ -137,9 +137,12 @@ class DiagnosticsBrain(sb.Brain):
 
         # Summarize the statistics from the stage for record-keeping.
         else:
+            metrics = self.error_metrics.summarize() 
             stats = {
                 "loss": stage_loss,
-                "error": self.error_metrics.summarize(),
+                "TP": metrics["TP"],
+                "TN": metrics["TN"],
+                "F1": metrics["F-score"],
             }
 
         # At the end of validation...
@@ -155,8 +158,8 @@ class DiagnosticsBrain(sb.Brain):
                 valid_stats=stats,
             )
 
-            # Save the current checkpoint and delete previous checkpoints, based on EER (or DER if no threshold passed)
-            self.checkpointer.save_and_keep_only(meta=stats, min_keys=["DER"])
+            # Save the current checkpoint and delete previous checkpoints, based on F1
+            self.checkpointer.save_and_keep_only(meta=stats, min_keys=["F1"])
 
         # We also write statistics about test data to stdout and to the logfile.
         if stage == sb.Stage.TEST:

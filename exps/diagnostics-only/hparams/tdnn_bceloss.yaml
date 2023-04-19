@@ -45,8 +45,8 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 sample_rate: 16000
 number_of_epochs: 50
 batch_size: 16
-lr_start: 0.001
-lr_final: 0.0001
+lr_start: 0.01
+lr_final: 0.001
 n_classes: 1
 emb_dim: 192 # dimensionality of the embeddings
 dataloader_options:
@@ -82,7 +82,7 @@ model: !new:model.SV_clf
     clf_out_neurons: !ref <n_classes>
     backbone_choice: !ref <encoder_model>
     pt_source: "speechbrain/spkrec-ecapa-voxceleb"
-    mean_var_normalize_emb: False
+    mean_var_normalize_emb: True
     side_info: False
     freeze_extractor: True
 

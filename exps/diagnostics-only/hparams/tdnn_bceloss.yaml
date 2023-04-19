@@ -81,7 +81,7 @@ model: !new:model.SV_clf
     clf_lin_neurons: 256
     clf_out_neurons: !ref <n_classes>
     backbone_choice: !ref <encoder_model>
-    pt_source: "speechbrain/spkrec-ecapa-voxceleb"
+    pt_source: "speechbrain/spkrec-xvect-voxceleb"
     mean_var_normalize_emb: False
     side_info: False
     freeze_extractor: True

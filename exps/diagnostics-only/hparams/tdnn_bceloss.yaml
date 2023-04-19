@@ -45,10 +45,10 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 sample_rate: 16000
 number_of_epochs: 50
 batch_size: 16
-lr_start: 0.01
-lr_final: 0.001
+lr_start: 0.1
+lr_final: 0.01
 n_classes: 1
-emb_dim: 192 # dimensionality of the embeddings
+emb_dim: 512 # dimensionality of the embeddings
 dataloader_options:
     batch_size: !ref <batch_size>
     drop_last: True
@@ -72,13 +72,13 @@ dataloader_options:
 
 
 # model hyper-parameters
-encoder_model: ECAPA
+encoder_model: XVECTOR
 
 model: !new:model.SV_clf
     clf_input_shape: [null, null, !ref <emb_dim>]
     clf_activation: !name:torch.nn.LeakyReLU
     clf_lin_blocks: 1
-    clf_lin_neurons: 100
+    clf_lin_neurons: 256
     clf_out_neurons: !ref <n_classes>
     backbone_choice: !ref <encoder_model>
     pt_source: "speechbrain/spkrec-ecapa-voxceleb"
@@ -93,8 +93,11 @@ modules:
 # The first object passed to the Brain class is this "Epoch Counter"
 # which is saved by the Checkpointer so that training can be resumed
 # if it gets interrupted at any point.
-epoch_counter: !new:speechbrain.utils.epoch_loop.EpochCounter
+epoch_counter: !new:speechbrain.utils.epoch_loop.EpochCounterWithStopper
     limit: !ref <number_of_epochs>
+    limit_to_stop: 3
+    limit_warmup: 2
+    direction: 'max'
 
 
 # This optimizer will be constructed by the Brain class after all parameters

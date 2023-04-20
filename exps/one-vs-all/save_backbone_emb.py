@@ -38,6 +38,8 @@ def encode_and_save(backbone_choice, pt_source, metadata_csv:str, save_path:str)
         enc = EncoderClassifier.from_hparams(source=pt_source)
     
     df_new = pd.DataFrame({'emb':[], 'label':[]})
+    emb_col = []
+    label_col = []
     df = pd.read_csv(metadata_csv, sep=';')
     for i, row in tqdm(df.iterrows()):
         filepath = row['voice-path-new']
@@ -45,9 +47,11 @@ def encode_and_save(backbone_choice, pt_source, metadata_csv:str, save_path:str)
         input, _ = read_audio(filepath)
         backbone_output = enc.encode_batch(wavs=input)
         backbone_output = torch.squeeze(backbone_output).numpy()
-        df_new.loc[i, 'emb'] = backbone_output
-        df_new.loc[i, 'label'] = label
-
+        emb_col.append(backbone_output)
+        label_col.append(label)
+    
+    df_new['emb'] = emb_col
+    df_new['label'] = label_col
     # save output
     df_new.to_csv(save_path,index=False,header=True,sep=';')
 

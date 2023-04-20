@@ -45,8 +45,8 @@ def encode_and_save(backbone_choice, pt_source, metadata_csv:str, save_path:str)
         input, _ = read_audio(filepath)
         backbone_output = enc.encode_batch(wavs=input)
         backbone_output = torch.squeeze(backbone_output).numpy()
-        df_new.iloc[i, 0] = backbone_output
-        df_new.iloc[i, 1] = label
+        df_new.loc[i, 'emb'] = backbone_output
+        df_new.loc[i, 'label'] = label
 
     # save output
     df_new.to_csv(save_path,index=False,header=True,sep=';')

@@ -6,6 +6,7 @@ from speechbrain.pretrained import EncoderClassifier
 import torchaudio.functional as F
 import torchaudio
 import pandas as pd
+from tqdm import tqdm
 
 def read_audio(file_path):
         """Load the signal, and pass it and its length to the corruption class.
@@ -38,10 +39,10 @@ def encode_and_save(backbone_choice, pt_source, metadata_csv:str, save_path:str)
     
     df_new = pd.DataFrame({'emb':[], 'label':[]})
     df = pd.read_csv(metadata_csv, sep=';')
-    for i, row in df.iterrows():
+    for i, row in tqdm(df.iterrows()):
         filepath = row['voice-path-new']
         label = row['Symptom-label']
-        input = read_audio(filepath)
+        input, _ = read_audio(filepath)
         backbone_output = enc.encode_batch(wavs=input)
         backbone_output = torch.squeeze(backbone_output).numpy()
         df_new.iloc[i, 0] = backbone_output

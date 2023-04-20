@@ -56,7 +56,7 @@ def encode_and_save(backbone_choice, pt_source, metadata_csv:str, save_path:str)
     df_new['emb'] = emb_col
     df_new['label'] = label_col
     # save output
-    df_new.to_json(save_path,index=False)
+    df_new.to_json(save_path)
 
 
 def main():

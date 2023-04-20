@@ -49,6 +49,9 @@ def encode_and_save(backbone_choice, pt_source, metadata_csv:str, save_path:str)
         backbone_output = torch.squeeze(backbone_output).numpy()
         emb_col.append(backbone_output)
         label_col.append(label)
+
+        if i == 4000:
+            break
     
     df_new['emb'] = emb_col
     df_new['label'] = label_col

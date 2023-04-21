@@ -40,10 +40,10 @@ error_stats: !name:speechbrain.utils.metric_stats.BinaryMetricStats
 
 # Training Parameters
 sample_rate: 16000
-number_of_epochs: 50
+number_of_epochs: 20
 batch_size: 16
-lr_start: 1e-3
-lr_final: 1e-4
+lr_start: 1e-4
+lr_final: 1e-5
 n_classes: 1
 dataloader_options:
     batch_size: !ref <batch_size>

@@ -296,15 +296,15 @@ if __name__ == "__main__":
         run_opts=run_opts,
         checkpointer=hparams["checkpointer"],
     )
-    with torch.autograd.detect_anomaly():
-        # training loop
-        brain.fit(
-            epoch_counter=brain.hparams.epoch_counter,
-            train_set=datasets["train"],
-            valid_set=datasets["valid"],
-            train_loader_kwargs=hparams["dataloader_options"],
-            valid_loader_kwargs=hparams["dataloader_options"],
-        )
+
+    # training loop
+    brain.fit(
+        epoch_counter=brain.hparams.epoch_counter,
+        train_set=datasets["train"],
+        valid_set=datasets["valid"],
+        train_loader_kwargs=hparams["dataloader_options"],
+        valid_loader_kwargs=hparams["dataloader_options"],
+    )
 
     # Load the best checkpoint for evaluation
     test_stats = brain.evaluate(

@@ -31,7 +31,7 @@ class feat_extract(nn.Module):
 
 
 
-class Classifier(sb.nnet.containers.Sequential):
+class Clf(sb.nnet.containers.Sequential):
     """This class implements the last MLP on the top of feature extracted from the encoder.
     Arguments
     ---------

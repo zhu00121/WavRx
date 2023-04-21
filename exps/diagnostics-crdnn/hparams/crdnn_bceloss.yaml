@@ -81,16 +81,16 @@ compute_features: !new:CRDNN_pipeline.feat_extract
 
 encoder: !new:CRDNN_pipeline.encoder
     input_size: 40
-    cnn_channels: [64,128]
+    cnn_channels: [32,64]
     rnn_layers: 2
-    rnn_neruons: 256
-    dnn_neurons: 256
+    rnn_neruons: 128
+    dnn_neurons: 128
 
 classifier: !new:CRDNN_pipeline.Clf
-    input_shape: [null, null, 256]
+    input_shape: [null, null, 128]
     activation: !name:torch.nn.LeakyReLU
     lin_blocks: 1
-    lin_neurons: 128
+    lin_neurons: 50
     out_neurons: 1
 
 

@@ -22,7 +22,7 @@ class feat_extract(nn.Module):
         self.compute_STFT = STFT(sample_rate=fs, win_length=win_length, hop_length=hop_length, n_fft=n_fft)
         self.compute_fbanks = Filterbank(n_mels=n_mels, n_fft=n_fft)
 
-    def forward(self,x ):
+    def forward(self,x):
 
         signal_STFT = self.compute_STFT(x)
         mag = spectral_magnitude(signal_STFT)

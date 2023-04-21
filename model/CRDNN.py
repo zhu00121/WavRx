@@ -2,7 +2,6 @@
 import torch
 import torch.nn as nn
 import speechbrain as sb
-from speechbrain.pretrained import EncoderClassifier
 from speechbrain.processing.features import STFT
 from speechbrain.processing.features import spectral_magnitude
 from speechbrain.processing.features import Filterbank
@@ -118,6 +117,6 @@ class encoder(nn.Module):
 
     def forward(self, x):
         output = self.enc(x)
-        output = torch.mean(output, axis=1)
+        output = torch.mean(output, axis=1, keepdim=True)
         return output
 

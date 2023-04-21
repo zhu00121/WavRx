@@ -131,5 +131,7 @@ lr_annealing: !new:speechbrain.nnet.schedulers.LinearScheduler
 checkpointer: !new:speechbrain.utils.checkpoints.Checkpointer
     checkpoints_dir: !ref <save_folder>
     recoverables:
-        model: !ref <model>
+        embedding_modle: !ref <embedding_model>
+        classifier: !ref <classifier>
         counter: !ref <epoch_counter>
+        lr_annealing: !ref <lr_annealing>

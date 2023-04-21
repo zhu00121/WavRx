@@ -87,7 +87,7 @@ encoder: !new:CRDNN.encoder
     dnn_neurons: 256
 
 classifier: !new:CRDNN.Classifier
-    input_shape: [null, null, !ref <dnn_neurons>]
+    input_shape: [null, null, 256]
     activation: torch.nn.LeakyReLU
     lin_blocks: 1
     lin_neurons: 128

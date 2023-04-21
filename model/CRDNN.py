@@ -7,6 +7,7 @@ from speechbrain.processing.features import STFT
 from speechbrain.processing.features import spectral_magnitude
 from speechbrain.processing.features import Filterbank
 from speechbrain.lobes.models.CRDNN import CRDNN
+from speechbrain.nnet.pooling import Pooling1d
 
 
 class feat_extract(nn.Module):
@@ -117,5 +118,6 @@ class encoder(nn.Module):
 
     def forward(self, x):
         output = self.enc(x)
+        output = torch.mean(output, axis=1)
         return output
 

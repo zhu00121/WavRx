@@ -75,8 +75,8 @@ mean_var_norm: !new:speechbrain.processing.features.InputNormalization
 compute_features: !new:CRDNN_pipeline.feat_extract
     fs: 16000
     win_length: 32
-    hop_length: 10
-    n_fft: 400
+    hop_length: 16
+    n_fft: 512
     n_mels: 40
 
 encoder: !new:CRDNN_pipeline.encoder

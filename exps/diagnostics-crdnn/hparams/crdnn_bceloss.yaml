@@ -72,21 +72,21 @@ mean_var_norm: !new:speechbrain.processing.features.InputNormalization
     norm_type: sentence
     std_norm: False
 
-compute_features: !new:CRDNN.feat_extract
+compute_features: !new:CRDNN_pipeline.feat_extract
     fs: 16000
     win_length: 32
     hop_length: 10
     n_fft: 512
     n_mels: 40
 
-encoder: !new:CRDNN.encoder
+encoder: !new:CRDNN_pipeline.encoder
     input_size: 40
     cnn_channels: [64,128]
     rnn_layers: 2
     rnn_neruons: 256
     dnn_neurons: 256
 
-classifier: !new:CRDNN.Classifier
+classifier: !new:CRDNN_pipeline.Classifier
     input_shape: [null, null, 256]
     activation: torch.nn.LeakyReLU
     lin_blocks: 1

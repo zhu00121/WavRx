@@ -1,4 +1,5 @@
 ./data_og/Cambridge/wav/*.wav
 ./data_og/*.zip
 ./pretrain_models
-./model/CRDNN.py
+./exps/exploratory/*.csv
+./exps/exploratory/*.json

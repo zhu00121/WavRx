@@ -80,7 +80,7 @@ compute_features: !new:CRDNN.feat_extract
     n_mels: 40
 
 encoder: !new:CRDNN.encoder
-    input_size: !ref <n_mels>
+    input_size: 40
     cnn_channels: [64,128]
     rnn_layers: 2
     rnn_neruons: 256

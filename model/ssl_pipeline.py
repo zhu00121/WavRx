@@ -49,11 +49,11 @@ class SSL_diagnoser(nn.Module):
 
     def forward(self,x):
         ssl_output = self.enc(x) # (batch, time, features)
-        print(ssl_output.shape)
         if self.quantizer is not None:
             ssl_output = self.quantizer(ssl_output) # (batch, time, features)
+        ssl_output = ssl_output.permute(0,2,1)
         ssl_output = self.pooling(ssl_output).squeeze(-1) # pool over time axis -> (batch, features)
-        print(ssl_output.shape)
+        ssl_output = ssl_output.permute(0,2,1)
         final_output = self.fc(ssl_output) # (batch, num_classes)
         return final_output
         

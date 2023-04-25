@@ -72,7 +72,7 @@ dataloader_options:
 
 
 # model hyper-parameters
-model: !new:model.ssl_pipeline.SSL_diagnoser
+model: !new:ssl_pipeline.SSL_diagnoser
     encoder_choice: !ref <encoder_name>
     ssl_encoder_source: facebook/wav2vec2-base-960h
     freeze_encoder: True

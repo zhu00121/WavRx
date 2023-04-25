@@ -4,7 +4,7 @@ __set_seed: !!python/object/apply:torch.manual_seed [!ref <random_seed>]
 
 # shared variables
 task: diagnostics-only-ssl
-encoder_name: wav2vec2
+encoder_name: 'wav2vec2'
 freeze_encoder: True
 data_folder: ./data_og
 dataset: Cambridge
@@ -74,7 +74,7 @@ dataloader_options:
 # model hyper-parameters
 model: !new:ssl_pipeline.SSL_diagnoser
     encoder_choice: !ref <encoder_name>
-    ssl_encoder_source: facebook/wav2vec2-base-960h
+    ssl_encoder_source: 'facebook/wav2vec2-base-960h'
     freeze_encoder: True
     num_input_features: 768
     num_fc_neurons: -1

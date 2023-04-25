@@ -26,9 +26,9 @@ class SSL_diagnoser(nn.Module):
         # Encoder module
         # TODO: add hubert
         if ssl_encoder_source == 'wav2vec2':
-            self.enc = HuggingFaceWav2Vec2(ssl_encoder_source, save_path='/content/pretrained/')
+            self.enc = HuggingFaceWav2Vec2(ssl_encoder_source, save_path='/pretrained_models')
         elif ssl_encoder_source == 'whisper':
-            self.enc = HuggingFaceWhisper(ssl_encoder_source, save_path='/content/pretrained/')
+            self.enc = HuggingFaceWhisper(ssl_encoder_source, save_path='/pretrained_models')
         
         for param in self.enc.parameters():
             param.requires_grad = not freeze_encoder

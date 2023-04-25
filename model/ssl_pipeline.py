@@ -53,7 +53,6 @@ class SSL_diagnoser(nn.Module):
             ssl_output = self.quantizer(ssl_output) # (batch, time, features)
         ssl_output = ssl_output.permute(0,2,1)
         ssl_output = self.pooling(ssl_output).squeeze(-1) # pool over time axis -> (batch, features)
-        ssl_output = ssl_output.permute(0,2,1)
         final_output = self.fc(ssl_output) # (batch, num_classes)
         return final_output
         

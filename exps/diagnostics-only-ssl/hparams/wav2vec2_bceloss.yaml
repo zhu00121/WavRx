@@ -4,7 +4,7 @@ __set_seed: !!python/object/apply:torch.manual_seed [!ref <random_seed>]
 
 # shared variables
 task: diagnostics-only-ssl
-encoder_name: wav2vec2
+encoder_name: 'wav2vec2'
 freeze_encoder: True
 data_folder: ./data_og
 dataset: Cambridge

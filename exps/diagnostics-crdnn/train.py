@@ -186,19 +186,19 @@ def dataio_prep(hparams):
     label_encoder = sb.dataio.encoder.CategoricalEncoder()
 
     # Define audio pipeline
-    @sb.utils.data_pipeline.takes("file_path")
+    @sb.utils.data_pipeline.takes("file_path", "fs")
     @sb.utils.data_pipeline.provides("signal","duration")
-    def audio_pipeline(file_path):
+    def audio_pipeline(file_path, fs):
         """Load the signal, and pass it and its length to the corruption class.
         This is done on the CPU in the `collate_fn`."""
         
-        signal, sr_og = torchaudio.load(file_path)
+        signal, _ = torchaudio.load(file_path)
         # handle multi-channel
         if signal.shape[0] > 1:
             signal = torch.mean(signal, axis=0)
 
-        if sr_og != 16000:
-            signal = F.resample(signal,sr_og,new_freq=16000,
+        if fs != 16000:
+            signal = F.resample(signal,fs,new_freq=16000,
                                 lowpass_filter_width=64,
                                 rolloff=0.9475937167399596,
                                 resampling_method="sinc_interp_kaiser",

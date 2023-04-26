@@ -63,7 +63,6 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:li
     """
     Creates the manifest file given the metadata file.
     """
-
     # Load metadata file
     df_metadata = pd.read_csv(metadata_path, sep=';')
     # Calculate total number of audio files
@@ -73,44 +72,14 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:li
     assert len(wav_files) == df_metadata.shape[0], "Number of audio files wein the folder is not consistent with number of samples in the metadata"
 
     # Split the metadata file into train,valid,and test files
-    df_train, df_valid, df_test = split_metadata(df_metadata, ratio, random_seed)
+    df_train = df_metadata[df_metadata['split']==0]
     dataframe_to_json(df_train,manifest_paths[0])
+    df_valid = df_metadata[df_metadata['split']==1]
     dataframe_to_json(df_valid,manifest_paths[1])
+    df_test = df_metadata[df_metadata['split']==2]
     dataframe_to_json(df_test,manifest_paths[2])
 
     logger.info(f"{manifest_paths} successfully created!")
-
-
-def split_metadata(metadata_df, ratio, random_seed):
-    """
-    User-independent split with each split contains similar symptomatic/non-symptomatic ratio
-    """
-
-    mask_1 = metadata_df['Symptom-label'] == 'symptomatic'
-    mask_2 = metadata_df['Symptom-label'] == 'non'
-    uid_pos = list(metadata_df[mask_1]['Uid'].unique())
-    uid_neg = list(metadata_df[mask_2]['Uid'].unique())
-    uid_pos = list(set(uid_pos).difference(set(uid_neg)))
-    
-    random.Random(random_seed).shuffle(uid_pos)
-    random.Random(random_seed).shuffle(uid_neg)
-
-    train_spk_pos = uid_pos[:int(len(uid_pos)*ratio[0])]
-    train_spk_neg = uid_neg[:int(len(uid_neg)**ratio[0])]
-    valid_spk_pos = uid_pos[int(len(uid_pos)**ratio[0]):int(len(uid_pos)*ratio[1])]
-    valid_spk_neg = uid_neg[int(len(uid_neg)**ratio[0]):int(len(uid_pos)*ratio[1])]
-    test_spk_pos = uid_pos[int(len(uid_pos)*ratio[1]):]
-    test_spk_neg = uid_neg[int(len(uid_neg)*ratio[1]):]
-
-    train_spk = train_spk_pos + train_spk_neg
-    valid_spk = valid_spk_pos + valid_spk_neg
-    test_spk = test_spk_pos + test_spk_neg
-
-    train_df = metadata_df[metadata_df['Uid'].isin(train_spk)]
-    valid_df = metadata_df[metadata_df['Uid'].isin(valid_spk)]
-    test_df = metadata_df[metadata_df['Uid'].isin(test_spk)]
-
-    return train_df, valid_df, test_df
 
 
 def dataframe_to_json(df,save_path):
@@ -120,10 +89,9 @@ def dataframe_to_json(df,save_path):
         utt_id = Path(row['voice-path-new']).stem # returns the name (without extension) E.g., '00000','00010'
         examples[utt_id] = {"ID": utt_id,
                             "file_path": row['voice-path-new'], 
-                            "symptom-label": row['Symptom-label'],
+                            "symptom-label": row['label'],
                             "symptom": row['Symptoms'],
-                            "length": torchaudio.info(row['voice-path-new']).num_frames,
-                            "fs": row['Sample Rate']}
+                            "length": torchaudio.info(row['voice-path-new']).num_frames}
         
     if not os.path.exists(os.path.dirname(save_path)):
         os.makedirs(os.path.dirname(save_path))

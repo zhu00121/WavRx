@@ -22,7 +22,7 @@ import torchaudio
 import torchaudio.functional as F
 import speechbrain as sb
 from hyperpyyaml import load_hyperpyyaml
-from prepare_diagnostics_data import prepare_data
+from prepare_task1_data import prepare_data
 
 
 # Brain class for speech enhancement training

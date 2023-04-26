@@ -42,7 +42,8 @@ def prepare_data(
         raise ValueError("Metadata file not found. Check the metadata folder. ")
 
     # If the wav folder does not exist, unzip the audio zip file
-    if not check_folders(wav_folder): 
+    if not check_folders(wav_folder):
+        print('Unzipping audio zip file...')
         unzip_audio_file(wav_folder, audio_archive_path)
     else: print('Found extracted audio files. Skip unzipping.')
 
@@ -69,7 +70,7 @@ def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:li
     wav_files = glob.glob(os.path.join(wav_folder, "*.wav"), recursive=True)
     print("Total wav audio files {} in the audio folder".format(len(wav_files)))
     # Sanity check if number of files in metadata is in consistency with number of files in the audio folder
-    assert len(wav_files) == df_metadata.shape[0], "Number of audio files wein the folder is not consistent with number of samples in the metadata"
+    assert len(wav_files) == df_metadata.shape[0], "Number of audio files in the folder is not consistent with number of samples in the metadata"
 
     # Split the metadata file into train,valid,and test files
     df_train = df_metadata[df_metadata['split']==0]
@@ -89,9 +90,8 @@ def dataframe_to_json(df,save_path):
         utt_id = Path(row['voice-path-new']).stem # returns the name (without extension) E.g., '00000','00010'
         examples[utt_id] = {"ID": utt_id,
                             "file_path": row['voice-path-new'], 
-                            "symptom-label": row['label'],
-                            "symptom": row['Symptoms'],
-                            "length": torchaudio.info(row['voice-path-new']).num_frames}
+                            "symptom_label": row['label'],
+                            "symptom": row['Symptoms']}
         
     if not os.path.exists(os.path.dirname(save_path)):
         os.makedirs(os.path.dirname(save_path))

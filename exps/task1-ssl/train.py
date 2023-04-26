@@ -73,7 +73,7 @@ class DiagnosticsBrain(sb.Brain):
             A one-element tensor used for backpropagating the gradient.
         """
         _, lens = batch.signal
-        lab, _ = batch.symptom_label_encoded
+        lab, _ = batch.symptom_label_tensor
         lab = lab.to(self.device)
 
         # Concatenate labels (due to data augmentation)
@@ -198,7 +198,14 @@ def dataio_prep(hparams):
         signal  = signal.squeeze()
         duration = len(signal)
         return signal, duration
-
+    
+    # Define label pipeline:
+    @sb.utils.data_pipeline.takes("symptom_label")
+    @sb.utils.data_pipeline.provides("symptom_label_tensor")
+    def label_pipeline(label):
+        """Defines the pipeline to process the input label."""
+        symptom_label_tensor = torch.Tensor(label)
+        yield symptom_label_tensor
 
     # Define datasets. We also connect the dataset with the data processing
     # functions defined above.
@@ -215,9 +222,9 @@ def dataio_prep(hparams):
         datasets[dataset] = sb.dataio.dataset.DynamicItemDataset.from_json(
             json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
-            dynamic_items=[audio_pipeline],
-            output_keys=["id", "signal", "duration", "file_path", "symptom-label", "symptom"],
-        )
+            dynamic_items=[audio_pipeline, label_pipeline],
+            output_keys=["id", "signal", "duration", "file_path", "symptom_label_tensor", "symptom"],
+        ).filtered_sorted(sort_key="duration", reverse=False)
 
     # # Load or compute the label encoder (with multi-GPU DDP support)
     # # Please, take a look into the lab_enc_file to see the label to index

@@ -45,8 +45,8 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 sample_rate: 16000
 number_of_epochs: 10
 batch_size: 16
-lr_start: 0.01
-lr_final: 0.001
+lr_start: 0.1
+lr_final: 0.01
 n_classes: 1
 dataloader_options:
     batch_size: !ref <batch_size>

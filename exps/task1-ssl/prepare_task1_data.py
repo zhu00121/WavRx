@@ -20,9 +20,7 @@ def prepare_data(
     metadata_path:str,
     manifest_train_path:str,
     manifest_valid_path:str,
-    manifest_test_path:str,
-    ratio:list = [0.7,0.2,0.1],
-    random_seed:int = 2023
+    manifest_test_path:str
     ):
 
     """
@@ -55,12 +53,11 @@ def prepare_data(
     # Creating json files for train, valid, and test all at once
     create_json(wav_folder, 
                 metadata_path, 
-                [manifest_train_path,manifest_valid_path,manifest_test_path],
-                ratio,
-                random_seed)
+                [manifest_train_path,manifest_valid_path,manifest_test_path]
+                )
 
 
-def create_json(wav_folder:str, metadata_path:str, manifest_paths:list, ratio:list, random_seed:int):
+def create_json(wav_folder:str, metadata_path:str, manifest_paths:list):
     """
     Creates the manifest file given the metadata file.
     """

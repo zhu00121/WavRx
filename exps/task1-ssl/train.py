@@ -184,7 +184,6 @@ def dataio_prep(hparams):
         This is done on the CPU in the `collate_fn`."""
         
         signal, sr_og = torchaudio.load(file_path)
-        print('signal is loaded')
         # handle multi-channel
         if signal.shape[0] > 1:
             signal = torch.mean(signal, axis=0)

@@ -204,7 +204,7 @@ def dataio_prep(hparams):
     @sb.utils.data_pipeline.provides("symptom_label_tensor")
     def label_pipeline(label):
         """Defines the pipeline to process the input label."""
-        symptom_label_tensor = torch.Tensor(label)
+        symptom_label_tensor = torch.tensor(label)
         yield symptom_label_tensor
 
     # Define datasets. We also connect the dataset with the data processing

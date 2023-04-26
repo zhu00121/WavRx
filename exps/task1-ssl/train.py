@@ -269,8 +269,7 @@ if __name__ == "__main__":
                 "metadata_path": hparams["metadata_path"],
                 "manifest_train_path": hparams["train_annotation"],
                 "manifest_valid_path": hparams["valid_annotation"],
-                "manifest_test_path": hparams["test_annotation"],
-                "random_seed": hparams["random_seed"]
+                "manifest_test_path": hparams["test_annotation"]
             },
         )
 

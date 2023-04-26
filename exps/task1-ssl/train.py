@@ -22,7 +22,7 @@ import torchaudio
 import torchaudio.functional as F
 import speechbrain as sb
 from hyperpyyaml import load_hyperpyyaml
-from prepare_diagnostics_data import prepare_data
+from prepare_task1_data import prepare_data
 
 
 # Brain class for speech enhancement training
@@ -176,10 +176,6 @@ def dataio_prep(hparams):
     so that the `train.csv`, `valid.csv` manifest files are available.
     """
 
-    # Initialization of the label encoder. The label encoder assigns to each
-    # of the observed label a unique index (e.g, 'fake': 0, 'genuine': 1, ..)
-    label_encoder = sb.dataio.encoder.CategoricalEncoder()
-
     # Define audio pipeline
     @sb.utils.data_pipeline.takes("file_path")
     @sb.utils.data_pipeline.provides("signal","duration")
@@ -203,14 +199,6 @@ def dataio_prep(hparams):
         duration = len(signal)
         return signal, duration
 
-    # Define label pipeline:
-    @sb.utils.data_pipeline.takes("symptom-label")
-    @sb.utils.data_pipeline.provides("symptom_label_encoded")
-    def label_pipeline(label):
-        """Defines the pipeline to process the input label."""
-        label_encoder.lab2ind = {'non':0, 'symptomatic':1}
-        label_encoded = label_encoder.encode_label_torch(label)
-        yield label_encoded
 
     # Define datasets. We also connect the dataset with the data processing
     # functions defined above.
@@ -227,8 +215,8 @@ def dataio_prep(hparams):
         datasets[dataset] = sb.dataio.dataset.DynamicItemDataset.from_json(
             json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
-            dynamic_items=[audio_pipeline, label_pipeline],
-            output_keys=["id", "signal", "duration", "file_path", "symptom_label_encoded", "symptom"],
+            dynamic_items=[audio_pipeline],
+            output_keys=["id", "signal", "duration", "file_path", "symptom-label", "symptom"],
         )
 
     # # Load or compute the label encoder (with multi-GPU DDP support)
@@ -275,7 +263,6 @@ if __name__ == "__main__":
                 "manifest_train_path": hparams["train_annotation"],
                 "manifest_valid_path": hparams["valid_annotation"],
                 "manifest_test_path": hparams["test_annotation"],
-                "ratio": hparams["ratio"],
                 "random_seed": hparams["random_seed"]
             },
         )

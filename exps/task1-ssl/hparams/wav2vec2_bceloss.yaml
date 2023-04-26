@@ -3,16 +3,16 @@ random_seed: 2023
 __set_seed: !!python/object/apply:torch.manual_seed [!ref <random_seed>]
 
 # shared variables
-task: diagnostics-only-ssl
+task: task1-ssl
 encoder_name: 'wav2vec2'
 freeze_encoder: True
 data_folder: ./data_og
 dataset: Cambridge
 
 # original audio and label file paths
-wav_folder: !ref <data_folder>/<dataset>/wav/EN
-audio_archive_path: !ref <wav_folder>/EN.zip
-metadata_path: !ref <data_folder>/<dataset>/metadata/EN-metadata.csv
+wav_folder: !ref <data_folder>/<dataset>/wav/TASK1-VOICE
+audio_archive_path: !ref <wav_folder>/TASK1-VOICE.zip
+metadata_path: !ref <data_folder>/<dataset>/metadata/TASK1-metadata.csv
 
 # data i/o paths
 output_folder: !ref ./exps/<task>/<encoder_name>/brain-logs/
@@ -25,7 +25,6 @@ rir_folder: !ref <data_folder>
 train_annotation: !ref ./exps/<task>/manifest/train.json
 valid_annotation: !ref ./exps/<task>/manifest/valid.json
 test_annotation: !ref ./exps/<task>/manifest/test.json
-ratio: [0.7,0.1,0.2]
 skip_prep: False
 
 # The train logger writes training statistics to a file, as well as stdout.
@@ -44,7 +43,7 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 
 # Training Parameters
 sample_rate: 16000
-number_of_epochs: 20
+number_of_epochs: 10
 batch_size: 4
 lr_start: 0.01
 lr_final: 0.001

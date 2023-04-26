@@ -11,7 +11,7 @@ dataset: Cambridge
 
 # original audio and label file paths
 wav_folder: !ref <data_folder>/<dataset>/wav/TASK1-VOICE
-audio_archive_path: !ref <wav_folder>/TASK1-VOICE.zip
+audio_archive_path: !ref <data_folder>/<dataset>/wav/TASK1-VOICE.zip
 metadata_path: !ref <data_folder>/<dataset>/metadata/TASK1-metadata.csv
 
 # data i/o paths

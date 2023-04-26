@@ -28,8 +28,8 @@ def prepare_data(
     """
     Input:
     ---
-    wav_folder: path to the folder where all audio files are stored. Default as './data_og/Cambridge/wav/EN'
-    metadata_path: path to the metadata file (.csv). Default as './data_og/Cambridge/metadata/EN-metadata.csv'
+    wav_folder: path to the folder where all audio files are stored. Default as './data_og/Cambridge/wav/TASK1-VOICE'
+    metadata_path: path to the metadata file (.csv). Default as './data_og/Cambridge/metadata/TASK1-metadata.csv'
     manifest_path: path to the manifest file (.json).
     """
 

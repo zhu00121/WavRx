@@ -133,4 +133,4 @@ def unzip_audio_file(destination, audio_archive_path):
     """
     if not os.path.exists(audio_archive_path):
         raise ValueError("Audio zip file not found. Please refer to prep.ipynb first to prepare the zip file.")
-    shutil.unpack_archive(os.path.dirname(audio_archive_path), destination) # this will create a folder called 'EN' inside of the 'wav' folder
+    shutil.unpack_archive(os.path.dirname(audio_archive_path), destination) # this will create a folder called 'TASK1-VOICE' inside of the 'wav' folder

@@ -15,7 +15,7 @@ audio_archive_path: !ref <data_folder>/<dataset>/wav/TASK1-VOICE.zip
 metadata_path: !ref <data_folder>/<dataset>/metadata/TASK1-metadata.csv
 
 # data i/o paths
-output_folder: !ref ./exps/<task>/<encoder_name>/brain-logs/
+output_folder: !ref ./exps/<task>/brain-logs/<encoder_name>
 save_folder: !ref <output_folder>/save
 train_log: !ref <output_folder>/train_log.txt
 rir_folder: !ref <data_folder>

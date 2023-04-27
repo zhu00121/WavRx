@@ -4,6 +4,7 @@ __set_seed: !!python/object/apply:torch.manual_seed [!ref <random_seed>]
 
 # shared variables
 task: task1-tdnn
+sub_task: xvector_frozen
 freeze_encoder: True
 data_folder: ./data_og
 dataset: Cambridge
@@ -14,7 +15,7 @@ audio_archive_path: !ref <data_folder>/<dataset>/wav/TASK1-VOICE.zip
 metadata_path: !ref <data_folder>/<dataset>/metadata/TASK1-metadata.csv
 
 # data i/o paths
-output_folder: !ref ./exps/<task>/brain-logs/
+output_folder: !ref ./exps/<task>/brain-logs/<sub_task>
 save_folder: !ref <output_folder>/save
 train_log: !ref <output_folder>/train_log.txt
 rir_folder: !ref <data_folder>

@@ -36,6 +36,7 @@ class DiagnosticsBrain(sb.Brain):
         batch = batch.to(self.device)
         wavs, _ = self.augment_input(batch.signal, stage)
         predictions = self.modules.model(wavs)
+        print(predictions)
         return predictions
     
     def augment_input(self, wavs, stage):
@@ -73,6 +74,7 @@ class DiagnosticsBrain(sb.Brain):
         """
         _, lens = batch.signal
         lab, _ = batch.symptom_label_tensor
+        print(lab)
         lab = lab.to(self.device)
 
         # Concatenate labels (due to data augmentation)

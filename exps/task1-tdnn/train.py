@@ -215,7 +215,7 @@ def dataio_prep(hparams):
         "test": hparams["test_annotation"]
     }
 
-    hparams["dataloader_options"]["shuffle"] = True
+    hparams["dataloader_options"]["shuffle"] = False
 
     for dataset in data_info:
         datasets[dataset] = sb.dataio.dataset.DynamicItemDataset.from_json(

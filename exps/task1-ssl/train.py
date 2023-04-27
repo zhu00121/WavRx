@@ -82,8 +82,8 @@ class DiagnosticsBrain(sb.Brain):
             lens = torch.cat([lens, lens])
 
         # Compute the cost function: BCE for a fake/genuine classification problem
-        weight = torch.tensor([1]).to(self.device)
-        loss = sb.nnet.losses.bce_loss(predictions, lab, pos_weight=weight)
+        # weight = torch.tensor([1]).to(self.device)
+        loss = sb.nnet.losses.bce_loss(predictions, lab)
 
         # Append this batch of losses to the loss metric for easy
         self.loss_metric.append(
@@ -216,7 +216,7 @@ def dataio_prep(hparams):
         "test": hparams["test_annotation"]
     }
 
-    hparams["dataloader_options"]["shuffle"] = True
+    hparams["dataloader_options"]["shuffle"] = False
 
     for dataset in data_info:
         datasets[dataset] = sb.dataio.dataset.DynamicItemDataset.from_json(

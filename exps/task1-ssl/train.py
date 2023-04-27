@@ -190,11 +190,12 @@ def dataio_prep(hparams):
 
         if sr_og != 16000:
             signal = F.resample(signal,sr_og,new_freq=16000)
-            
+
         signal  = signal.squeeze()
         signal = signal / torch.max(torch.abs(signal))
         duration = len(signal)
-        return signal, duration
+        yield signal
+        yield duration
     
     # Define label pipeline:
     @sb.utils.data_pipeline.takes("symptom_label")

@@ -76,7 +76,7 @@ model: !new:ssl_pipeline.SSL_diagnoser
     ssl_encoder_source: 'facebook/wav2vec2-base-960h'
     freeze_encoder: True
     num_input_features: 768
-    num_fc_neurons: -1
+    num_fc_neurons: 100
     num_classes: 1
     dp: 0.2
     quantizer: null

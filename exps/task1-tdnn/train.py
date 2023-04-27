@@ -92,6 +92,7 @@ class DiagnosticsBrain(sb.Brain):
         # Compute classification error at test time
         if stage != sb.Stage.TRAIN:
             self.error_metrics.append(batch.id, predictions, lab)
+            print(predictions[:5])
 
         return loss
 

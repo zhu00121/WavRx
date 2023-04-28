@@ -221,7 +221,9 @@ def dataio_prep(hparams):
             # replacements={"data_root": hparams["data_folder"]},
             dynamic_items=[audio_pipeline, label_pipeline],
             output_keys=["id", "signal", "duration", "file_path", "symptom_label_tensor", "symptom"],
-        ).filtered_sorted(sort_key="duration", reverse=False)
+        )
+    
+    # .filtered_sorted(sort_key="duration", reverse=False)
 
     # # Load or compute the label encoder (with multi-GPU DDP support)
     # # Please, take a look into the lab_enc_file to see the label to index

@@ -106,6 +106,8 @@ class SV_clf(nn.Module):
         elif backbone_choice == 'XVECTOR':
             self.feature_extractor = EncoderClassifier.from_hparams(source=pt_source, run_opts={"device":"cuda"})
         
+        # TODO: add norm before sending embeddings to FC layers
+
         # TODO: add side information
         # Define side information. Could be 'LFCC', 'MFCC', 'MSF', or any other speech features.
         if self.side_info:

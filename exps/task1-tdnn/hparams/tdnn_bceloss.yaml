@@ -43,10 +43,10 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 
 # Training Parameters
 sample_rate: 16000
-number_of_epochs: 10
+number_of_epochs: 30
 batch_size: 16
-lr_start: 0.01
-lr_final: 0.001
+lr_start: 0.005
+lr_final: 0.0005
 n_classes: 1
 emb_dim: 512 # dimensionality of the embeddings
 dataloader_options:
@@ -102,6 +102,8 @@ epoch_counter: !new:speechbrain.utils.epoch_loop.EpochCounterWithStopper
 
 # This optimizer will be constructed by the Brain class after all parameters
 # are moved to the correct device. Then it will be added to the checkpointer.
+
+# TODO: try different optimizers
 opt_class: !name:torch.optim.Adam
     lr: !ref <lr_start>
 

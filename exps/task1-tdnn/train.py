@@ -74,7 +74,7 @@ class DiagnosticsBrain(sb.Brain):
         """
         _, lens = batch.signal
         lab, _ = batch.symptom_label_tensor
-        print(lab)
+        # print(lab)
         lab = lab.to(self.device)
 
         # Concatenate labels (due to data augmentation)

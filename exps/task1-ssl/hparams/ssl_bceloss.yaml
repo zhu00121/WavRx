@@ -4,7 +4,7 @@ __set_seed: !!python/object/apply:torch.manual_seed [!ref <random_seed>]
 
 # shared variables
 task: task1-ssl
-encoder_name: 'wav2vec2'
+encoder_name: 'wavlm'
 freeze_encoder: True
 data_folder: ./data_og
 dataset: Cambridge
@@ -44,7 +44,7 @@ ckpt_interval_minutes: 15 # save checkpoint every N min
 # Training Parameters
 sample_rate: 16000
 number_of_epochs: 10
-batch_size: 8
+batch_size: 4
 lr_start: 0.001
 lr_final: 0.0001
 n_classes: 1
@@ -70,13 +70,15 @@ dataloader_options:
 #     speeds: [95, 100, 105]
 
 
+# 'facebook/wav2vec2-base-960h'
+
 # model hyper-parameters
-model: !new:ssl_pipeline.SSL_diagnoser
+model: !new:ssl_pipeline.SSL_diagnoser_v2
     encoder_choice: !ref <encoder_name>
-    ssl_encoder_source: 'facebook/wav2vec2-base-960h'
+    ssl_encoder_source: "patrickvonplaten/wavlm-libri-clean-100h-base-plus"
     freeze_encoder: True
     num_input_features: 768
-    num_fc_neurons: 100
+    num_fc_neurons: -1
     num_classes: 1
     dp: 0.2
     quantizer: null

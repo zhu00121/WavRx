@@ -63,38 +63,40 @@ class SSL_diagnoser(nn.Module):
 class SSL_diagnoser_v2(nn.Module):
     def __init__(
         self,
-        encoder: str = "microsoft/wavlm-base-plus",
+        encoder_choice: str = 'wavlm',
+        ssl_encoder_source: str = "microsoft/wavlm-base-plus",
         pooling: str = "avg",
-        num_features: int = 768,
-        num_classes: int = 7,
+        num_input_features: int = 768,
+        num_fc_neurons:int=-1,
+        num_classes: int = 1,
         freeze_encoder: bool = True,
         *args,
         **kwargs
-    ) -> None:
+        ):
+        
         super().__init__(*args, **kwargs)
-        self.feature_extractor = AutoModel.from_pretrained(encoder)
+        self.feature_extractor = AutoModel.from_pretrained(ssl_encoder_source)
         for param in self.feature_extractor.parameters():
             param.requires_grad = not freeze_encoder
-
+        
+        if num_fc_neurons == -1: num_fc_neurons = num_input_features
         self.fc = nn.Sequential(
-            nn.Linear(num_features, num_features),
+            nn.Linear(num_input_features, num_fc_neurons),
             nn.Dropout(p=0.25),
             nn.LeakyReLU(0.1),
-            nn.Linear(num_features, num_classes)
+            nn.Linear(num_input_features, num_classes)
         )
 
         self.weights_stack = nn.Parameter(torch.ones(self.feature_extractor.config.num_hidden_layers))
-        try:
-            self.processor = AutoProcessor.from_pretrained(encoder)
-        except:
-            self.processor = AutoProcessor.from_pretrained("facebook/wav2vec2-base-960h")
+        
+        self.processor = AutoProcessor.from_pretrained(ssl_encoder_source)
 
         if pooling == "avg":
             self.pooling = lambda x: F.adaptive_avg_pool1d(x, 1)
         else:
             self.pooling = AttentiveStatisticsPooling(
-                num_features,
-                attention_channels=num_features,
+                num_input_features,
+                attention_channels=num_input_features,
                 global_context=True
             )
 

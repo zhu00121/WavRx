@@ -80,8 +80,8 @@ model: !new:ssl_pipeline.SSL_diagnoser_v2
     num_input_features: 768
     num_fc_neurons: -1
     num_classes: 1
-    dp: 0.2
-    quantizer: null
+    dp: 0.25
+    # quantizer: null
 
 # modules
 modules:

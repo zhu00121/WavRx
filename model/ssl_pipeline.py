@@ -70,6 +70,7 @@ class SSL_diagnoser_v2(nn.Module):
         num_fc_neurons:int=-1,
         num_classes: int = 1,
         freeze_encoder: bool = True,
+        dp = 0.25,
         *args,
         **kwargs
         ):
@@ -82,7 +83,7 @@ class SSL_diagnoser_v2(nn.Module):
         if num_fc_neurons == -1: num_fc_neurons = num_input_features
         self.fc = nn.Sequential(
             nn.Linear(num_input_features, num_fc_neurons),
-            nn.Dropout(p=0.25),
+            nn.Dropout(p=dp),
             nn.LeakyReLU(0.1),
             nn.Linear(num_input_features, num_classes)
         )

@@ -1,5 +1,3 @@
-./data_og/Cambridge/wav/*.wav
-./data_og/*.zip
+./data_og
 ./pretrain_models
-./exps/exploratory/*.csv
-./exps/exploratory/*.json
+./exps

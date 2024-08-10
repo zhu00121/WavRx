@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Recipe for training a symptom diagnostics model.
+"""Recipe for training a dyarthria diagnostics model.
 
 To run this recipe, do the following:
-> python train.py manifest/train.yaml
+> python train.py hparams/train.yaml
 
 To read the code, first scroll to the bottom to see the "main" code.
 This gives a high-level overview of what is going on, while the
@@ -302,6 +302,3 @@ if __name__ == "__main__":
         max_key="F1",
         test_loader_kwargs=hparams["dataloader_options"],
     )
-
-    # TODO: add another test_stats to track speaker verification results; 
-    # this can be done by adding another key in datasets (e.g., 'test-sv') with SV annotations as values

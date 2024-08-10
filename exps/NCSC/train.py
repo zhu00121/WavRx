@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recipe for training a dyarthria diagnostics model.
+"""Recipe for training a diagnostics model for cervical cancer.
 
 To run this recipe, do the following:
 > python train.py hparams/train.yaml
@@ -9,22 +9,19 @@ This gives a high-level overview of what is going on, while the
 Brain class definition provides the details of what happens
 for each batch during training.
 
-Noise and reverberation are automatically added to each sample from OpenRIR.
-
 Authors
  * Yi Zhu 2023
 """
 import os
 import sys
-sys.path.append('model')
+sys.path.append('./model')
 import torch
 import numpy as np
 import torchaudio
-import torch.nn.functional as NF
 import torchaudio.functional as F
 import speechbrain as sb
 from hyperpyyaml import load_hyperpyyaml
-from prepare_torgo_data import prepare_data
+from prepare_ncsc_data import prepare_data
 
 
 # Brain class for speech enhancement training
@@ -74,7 +71,7 @@ class DiagnosticsBrain(sb.Brain):
             A one-element tensor used for backpropagating the gradient.
         """
         _, lens = batch.signal
-        lab, _ = batch.dys_label_tensor
+        lab, _ = batch.intl_label_tensor
         lab = lab.to(self.device)
 
         # Concatenate labels (due to data augmentation)
@@ -193,11 +190,6 @@ def dataio_prep(hparams):
             signal = F.resample(signal,sr_og,new_freq=16000)
 
         signal  = signal.squeeze()
-
-        if len(signal) < 16000:
-            p1d = (int((16000-len(signal)) / 2),int((16000-len(signal)) / 2))
-            signal = NF.pad(signal, p1d, "constant", 1e-14)
-            
         signal = signal / torch.max(torch.abs(signal))
         # clamp length
         if hparams['clamp_length'] != None:
@@ -207,12 +199,12 @@ def dataio_prep(hparams):
         yield duration
     
     # Define label pipeline:
-    @sb.utils.data_pipeline.takes("dys_label")
-    @sb.utils.data_pipeline.provides("dys_label_tensor")
+    @sb.utils.data_pipeline.takes("intl_label")
+    @sb.utils.data_pipeline.provides("intl_label_tensor")
     def label_pipeline(label):
         """Defines the pipeline to process the input label."""
-        dys_label_tensor = torch.tensor(label).view(1,-1)[0].type(torch.LongTensor)
-        yield dys_label_tensor
+        intl_label_tensor = torch.tensor(label).view(1,-1)[0].type(torch.LongTensor)
+        yield intl_label_tensor
 
     # Define datasets. We also connect the dataset with the data processing
     # functions defined above.
@@ -230,7 +222,7 @@ def dataio_prep(hparams):
             json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
             dynamic_items=[audio_pipeline, label_pipeline],
-            output_keys=["id", "signal", "duration", "file_path", "dys_label_tensor"],
+            output_keys=["id", "signal", "duration", "file_path", "intl_label_tensor"],
         ).filtered_sorted(sort_key="duration", reverse=False)
 
     return datasets

@@ -3,18 +3,18 @@ random_seed: 2023
 __set_seed: !!python/object/apply:torch.manual_seed [!ref <random_seed>]
 
 # shared variables
-task: Cambridge_Respiratory
-encoder_name: wavrx     # not referenced anywhere, just for keep track of the model tested
+task: TORGO
+encoder_name: wavrx
 freeze_encoder: True
 data_folder: ./data_og
-dataset: Cambridge
+dataset: TORGO
 
 # original audio and label file paths
-wav_folder: !ref <data_folder>/<dataset>/wav/EN
-audio_archive_path: !ref <data_folder>/<dataset>/wav/EN.zip
-metadata_path: !ref <data_folder>/<dataset>/metadata/EN-metadata.csv
+wav_folder: !ref <data_folder>/<dataset>/wav/
+audio_archive_path: !ref <data_folder>/<dataset>/wav/TORGO.tar.gz
+metadata_path: !ref <data_folder>/<dataset>/metadata/TORGO-metadata.csv
 
-# output folder: this is where the training log and checkpoints will be saved
+# data i/o paths
 output_folder: !ref ./exps/<task>/brain-logs
 save_folder: !ref <output_folder>/save
 train_log: !ref <output_folder>/train_log.txt
@@ -25,17 +25,13 @@ rir_folder: !ref <data_folder>
 train_annotation: !ref ./exps/<task>/manifest/train.json
 valid_annotation: !ref ./exps/<task>/manifest/valid.json
 test_annotation: !ref ./exps/<task>/manifest/test.json
-ratio: [0.7,0.1,0.2]
 skip_prep: False
 
 # The train logger writes training statistics to a file, as well as stdout.
 train_logger: !new:speechbrain.utils.train_logger.FileTrainLogger
     save_file: !ref <train_log>
 
-# error_stats: !name:speechbrain.utils.metric_stats.MetricStats
-#     # metric: !name:speechbrain.utils.metric_stats.BinaryMetricStats
-#     metric: !name:speechbrain.nnet.losses.classification_error
-#         reduction: batch
+
 error_stats: !name:speechbrain.utils.metric_stats.BinaryMetricStats
 
 
@@ -45,7 +41,7 @@ clamp_length: 160000
 
 # Training Parameters
 sample_rate: 16000
-number_of_epochs: 20
+number_of_epochs: 30
 batch_size: 1
 lr_start: 0.0001
 lr_final: 0.00001
@@ -55,24 +51,23 @@ dataloader_options:
     drop_last: True
 
 
-# # Added noise and reverb come from OpenRIR dataset, automatically
-# # downloaded and prepared with this Environmental Corruption class.
-# env_corrupt: !new:speechbrain.lobes.augment.EnvCorrupt
-#     openrir_folder: !ref <rir_folder>
-#     babble_prob: 0.0
-#     reverb_prob: 1.0
-#     noise_prob: 1.0
-#     noise_snr_low: 0
-#     noise_snr_high: 15
+# Added noise and reverb come from OpenRIR dataset, automatically
+# downloaded and prepared with this Environmental Corruption class.
+env_corrupt: !new:speechbrain.lobes.augment.EnvCorrupt
+    openrir_folder: !ref <rir_folder>
+    babble_prob: 0.0
+    reverb_prob: 1.0
+    noise_prob: 1.0
+    noise_snr_low: 0
+    noise_snr_high: 15
 
-# # Adds speech change + time and frequency dropouts (time-domain implementation)
-# # # A small speed change help to improve the performance of speaker-id as well.
-# augmentation: !new:speechbrain.lobes.augment.TimeDomainSpecAugment
-#     sample_rate: !ref <sample_rate>
-#     speeds: [95, 100, 105]
+# Adds speech change + time and frequency dropouts (time-domain implementation)
+# # A small speed change help to improve the performance of speaker-id as well.
+augmentation: !new:speechbrain.lobes.augment.TimeDomainSpecAugment
+    sample_rate: !ref <sample_rate>
+    speeds: [95, 100, 105]
 
-
-# model hyper-parameters
+# model hypeparameters
 model: !new:wavrx.WavRx
     ssl_encoder_source: "microsoft/wavlm-base-plus"
     num_ssl_feat: 768

@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Recipe for training a symptom diagnostics model for the CS-Res dataset.
-This dataset was used for `task1' in the Cambridge COVID sound database paper, we use the same partition here.
+"""Recipe for training a symptom diagnostics model.
 
 To run this recipe, do the following:
-> python train.py hparams/train.yaml
+> python train.py manifest/train.yaml
 
 To read the code, first scroll to the bottom to see the "main" code.
 This gives a high-level overview of what is going on, while the
 Brain class definition provides the details of what happens
 for each batch during training.
+
+Noise and reverberation are automatically added to each sample from OpenRIR.
 
 Authors
  * Yi Zhu 2023
@@ -17,11 +18,13 @@ import os
 import sys
 sys.path.append('./model')
 import torch
+import numpy as np
 import torchaudio
+import torch.nn.functional as NF
 import torchaudio.functional as F
 import speechbrain as sb
 from hyperpyyaml import load_hyperpyyaml
-from prepare_task1_data import prepare_data
+from prepare_nemours_data import prepare_data
 
 
 # Brain class for speech enhancement training
@@ -71,7 +74,7 @@ class DiagnosticsBrain(sb.Brain):
             A one-element tensor used for backpropagating the gradient.
         """
         _, lens = batch.signal
-        lab, _ = batch.symptom_label_tensor
+        lab, _ = batch.dys_label_tensor
         lab = lab.to(self.device)
 
         # Concatenate labels (due to data augmentation)
@@ -80,8 +83,8 @@ class DiagnosticsBrain(sb.Brain):
             lens = torch.cat([lens, lens])
 
         # Compute the cost function: BCE
-        # weight = torch.tensor([1]).to(self.device)
-        loss = sb.nnet.losses.bce_loss(predictions, lab)
+        weight = torch.tensor([1]).to(self.device)
+        loss = sb.nnet.losses.bce_loss(predictions, lab, pos_weight = weight)
 
         # Append this batch of losses to the loss metric for easy
         self.loss_metric.append(
@@ -180,8 +183,13 @@ def dataio_prep(hparams):
     def audio_pipeline(file_path):
         """Load the signal, and pass it and its length to the corruption class.
         This is done on the CPU in the `collate_fn`."""
-        
-        signal, sr_og = torchaudio.load(file_path)
+        try:
+            signal, sr_og = torchaudio.load(file_path)
+        except:
+            print('Loading error with '+str(file_path))
+            signal = torch.ones(16000) * 1e-3
+            sr_og = 16000
+
         # handle multi-channel
         if signal.shape[0] > 1:
             signal = torch.mean(signal, axis=0)
@@ -190,18 +198,26 @@ def dataio_prep(hparams):
             signal = F.resample(signal,sr_og,new_freq=16000)
 
         signal  = signal.squeeze()
+
+        if len(signal) < 16000:
+            p1d = (int((16000-len(signal)) / 2),int((16000-len(signal)) / 2))
+            signal = NF.pad(signal, p1d, "constant", 1e-14)
+            
         signal = signal / torch.max(torch.abs(signal))
+        # clamp length
+        if hparams['clamp_length'] != None:
+            signal = signal[:np.minimum(hparams['clamp_length'],signal.shape[0])]
         duration = len(signal)
         yield signal
         yield duration
     
     # Define label pipeline:
-    @sb.utils.data_pipeline.takes("symptom_label")
-    @sb.utils.data_pipeline.provides("symptom_label_tensor")
+    @sb.utils.data_pipeline.takes("dys_label")
+    @sb.utils.data_pipeline.provides("dys_label_tensor")
     def label_pipeline(label):
         """Defines the pipeline to process the input label."""
-        symptom_label_tensor = torch.tensor(label).view(1,-1)[0].type(torch.LongTensor)
-        yield symptom_label_tensor
+        dys_label_tensor = torch.tensor(label).view(1,-1)[0].type(torch.LongTensor)
+        yield dys_label_tensor
 
     # Define datasets. We also connect the dataset with the data processing
     # functions defined above.
@@ -219,18 +235,8 @@ def dataio_prep(hparams):
             json_path=data_info[dataset],
             # replacements={"data_root": hparams["data_folder"]},
             dynamic_items=[audio_pipeline, label_pipeline],
-            output_keys=["id", "signal", "duration", "file_path", "symptom_label_tensor", "symptom"],
+            output_keys=["id", "signal", "duration", "file_path", "dys_label_tensor"],
         ).filtered_sorted(sort_key="duration", reverse=False)
-
-    # # Load or compute the label encoder (with multi-GPU DDP support)
-    # # Please, take a look into the lab_enc_file to see the label to index
-    # # mapping.
-    # lab_enc_file = os.path.join(hparams["save_folder"], "label_encoder.txt")
-    # label_encoder.load_or_create(
-    #     path=lab_enc_file,
-    #     from_didatasets=[datasets["train"]],
-    #     output_key="symptom",
-    # )
 
     return datasets
 
@@ -296,3 +302,6 @@ if __name__ == "__main__":
         max_key="F1",
         test_loader_kwargs=hparams["dataloader_options"],
     )
+
+    # TODO: add another test_stats to track speaker verification results; 
+    # this can be done by adding another key in datasets (e.g., 'test-sv') with SV annotations as values

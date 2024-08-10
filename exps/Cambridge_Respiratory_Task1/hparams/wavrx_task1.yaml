@@ -70,7 +70,7 @@ dataloader_options:
 model: !new:wavrx.WavRx
     ssl_encoder_source: "microsoft/wavlm-base-plus"
     num_ssl_feat: 768
-    num_fc_neurons: -1
+    num_fc_neurons: 768
     num_classes: 1
     freeze_encoder: True
     pooling_1: 'atn'

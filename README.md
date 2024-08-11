@@ -46,7 +46,6 @@ We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environ
 2. Install dependencies:
     ```
     pip install -r requirements.txt
-    pip install -e .
     ```
    These commands will install the dependencies for using WavRx. 
 
@@ -59,7 +58,6 @@ Note that some employed datasets are subject to confidentiality agreement, this 
 | WavRx-dysarthria                    | [TORGO]()                                                                                     | [huggingface.co/](https://huggingface.co/)  |
 | WavRx-dysarthria                              | [Nemours]()                                                    | [huggingface.co/](https://huggingface.co/)                    |
 | WavRx-cancer                                  | [NCSC]()                                                   | [huggingface.co/](https://huggingface.co/)     |
-|
 
 # 👷 Model Training Recipes
 
@@ -79,12 +77,18 @@ Since each dataset has a different dataset structure with the corresponding part
 
 The steps for training *WavRx* (or your own model) are as follows:
 
-1. Prepare the dataset in a format that is compatible with *SpeechBrain*. Use the **Link to data preparation scripts** to access the data prepration scripts.
+1. Prepare the dataset in a format that is compatible with *SpeechBrain*. Use the **Link to data preparation scripts** to see how to prepare each dataset in the required format, as well as where to download the data files.
 
 2. [Optional only if you want to train your own model] Place the code of your model in the ``model`` folder, it needs to have 1 output neuron (without sigmoid).
 
-## Running multiple tasks
+3. Check the hyperparameter file at ``exps/<DATASET>/hparams/wavrx_<DATASET>.yaml``. Modify the data i/o paths if needed. We provide a detailed guidance in the ``demos`` folder where we walk through the hyperparam file and demonstrate how to modify it for your own usage.
 
+4. The ``train.py`` does NOT need to be edited. Unless you want to change the training strategy or the loss function. All the hyperparameters and the input models are controlled by modifying the hyperparam file. This helps to ensure that models are compared in a fair manner.
+
+5. Initiate training by calling ``python train.py hparams/wavrx_<DATASET>.yaml``. The test evaluation will be automatically conducted at the end of training using the best checkpoint with the highest F1 score. The results will be automatically saved.
+
+## Running multiple tasks
+Currently the repository is not built for running multiple tasks in one-shot, while this can be done by wrapping them in one shell script. However, such function will be made available with our ongoing health benchmark project - a larger health benchmark for easy implementation and evaluation of SOTA diagnostic models for 10+ diseases. If you are interested, keep an eye on the [SpeechBrain Benchmark](https://github.com/speechbrain/benchmarks) where we will be releasing our scripts.
 
 # 📧 Contact
 

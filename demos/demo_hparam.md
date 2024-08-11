@@ -1,7 +1,7 @@
 ## Step-by-step intro on hparam file
 
 
-This document is meant to walk through the structure of the hyperparameter file, and to show how it is passing the different parameters into the training script ``train.py``. 
+This notebook is meant to walk through the structure of the hyperparameter file, and to show how it is passing the different parameters into the training script ``train.py``. 
 
 ### Locate the hparam file
 

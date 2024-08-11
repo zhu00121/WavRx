@@ -1,7 +1,3 @@
-### WavRx: a generic speech health diagnostic model
-
-This repository contains code to implement our model WavRx. The current repo only contains the model architecture, we will make the dataset set-up and training scripts available soon.
-
 <!-- <p align="center">
   <img src="WavRx_logo.png" alt="WavRx logo" width=200/>
 </p> -->
@@ -55,6 +51,7 @@ We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environ
    These commands will install the dependencies for using WavRx. 
 
 # 🌟 Pretrained Model Backbones (to be released on HG)
+Note that some employed datasets are subject to confidentiality agreement, this restriction may also apply to the pretrained model weights. We are currently working on making the pretrained backbones open-source on HuggingFace.
 | **Model**                                                                 | **Dataset**                                                                                       | **Repo**                                                         |
 |--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
 | WavRx-respiratory                      | [Cambridge COVID-19 Sound]()                                                                                     | [huggingface.co/](https://huggingface.co/)  |
@@ -66,18 +63,25 @@ We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environ
 
 # 👷 Model Training Recipes
 
-| **Dataset**                              | **Task**                             | **Link to recipes**                                                                       |
-|------------------------------------------|--------------------------------------|----------------------------------------------------------------------------------------|
-| Cambridge-Task1 | Respiraty Symptom Detection  | [link]()                                               |
-| Cambridge-EN                         | Respiraty Symptom                   | [link]()|
-| DiCOVA2                                | COVID-19  | [link]()|                  
-| TORGO                                  | Dysarthria   | [link]()|
-| Nemours                          | Dysarthria | [link]()|
-| NCSC                                   | Cervical Cancer  | [link]()|
+| **Dataset**                              | **Task**                             | **Link to training recipes** | **Link to data preparation scripts**                                                                       |
+|------------------------------------------|--------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------|
+| Cambridge-Task1 | Respiraty Symptom Detection  | [link]()                                               |[link]()|
+| Cambridge-EN                         | Respiraty Symptom                   | [link]()|[link]()|
+| DiCOVA2                                | COVID-19  | [link]()| [link]() |                  
+| TORGO                                  | Dysarthria   | [link]()| [link]() |
+| Nemours                          | Dysarthria | [link]()| [link]()|
+| NCSC                                   | Cervical Cancer  | [link]()| [link]() |
 
 # ▶️ Quickstart
 
 ## Running a single task
+Since each dataset has a different dataset structure with the corresponding partition, the training receipes are therefore stored separately in different folders. *Links* in the table above can be used to locate the corresponding recipes for a given dataset. 
+
+The steps for training *WavRx* (or your own model) are as follows:
+
+1. Prepare the dataset in a format that is compatible with *SpeechBrain*. Use the **Link to data preparation scripts** to access the data prepration scripts.
+
+2. [Optional only if you want to train your own model] Place the code of your model in the ``model`` folder, it needs to have 1 output neuron (without sigmoid).
 
 ## Running multiple tasks
 

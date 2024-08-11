@@ -2,7 +2,7 @@
   <img src="WavRx_logo.png" alt="WavRx logo" width=200/>
 </p> -->
 
-# WavRx - a speech health diagnostic model
+# WavRx - a Speech Health Diagnostic Model
 
 This repository provides scripts for running a new SOTA speech health diagnostic model *WavRx*. *WavRx* obtains SOTA performance on 6 datasets covering 4 different pathologies, and shows good zero-shot generalizability. The health embeddings encoded by *WavRx* are shown to carry minimal speaker identity attributes.
 
@@ -77,22 +77,26 @@ Since each dataset has a different dataset structure with the corresponding part
 
 The steps for training *WavRx* (or your own model) are as follows:
 
-1. Prepare the dataset in a format that is compatible with *SpeechBrain*. Use the **Link to data preparation scripts** to see how to prepare each dataset in the required format, as well as where to download the data files.
+1. Medical data are hard to access and they typically do not have similar data structures. We make this easy for you. Use the **Link to data preparation scripts** to see where to download the data files, and how to prepare each dataset in the required format.
 
 2. [Optional only if you want to train your own model] Place the code of your model in the ``model`` folder, it needs to have 1 output neuron (without sigmoid).
 
-3. Check the hyperparameter file at ``exps/<DATASET>/hparams/wavrx_<DATASET>.yaml``. Modify the data i/o paths if needed. We provide a detailed guidance in the ``demos`` folder where we walk through the hyperparam file and demonstrate how to modify it for your own usage.
+3. Check the hyperparameter file at ``exps/<DATASET>/hparams/wavrx_<DATASET>.yaml``. Modify the variables if needed. We provide a detailed guidance in ``demos/demo_hparam.md`` where we walk through the hyperparam file and demonstrate how to modify it for your own usage. If you simply want to replicate our results, there is no need to change it.
 
-4. The ``train.py`` does NOT need to be edited. Unless you want to change the training strategy or the loss function. All the hyperparameters and the input models are controlled by modifying the hyperparam file. This helps to ensure that models are compared in a fair manner.
+4. The ``train.py`` does NOT need to be edited. Unless you want to change the training strategy or the loss function (i.e., Supervised training with BCEwithlogits loss). All the hyperparameters and the input models are controlled by modifying the hyperparam file. This helps to ensure that models are compared in a fair manner.
 
 5. Initiate training by calling ``python train.py hparams/wavrx_<DATASET>.yaml``. The test evaluation will be automatically conducted at the end of training using the best checkpoint with the highest F1 score. The results will be automatically saved.
 
-## Running multiple tasks
+6. Repeat step-5 for each dataset, results will be saved independently in the corresponding `exp/<DATASET>` folder.
+
+😎 Voila! Enjoy your model training 😎
+
+## Running multiple tasks in one-shot
 Currently the repository is not built for running multiple tasks in one-shot, while this can be done by wrapping them in one shell script. However, such function will be made available with our ongoing health benchmark project - a larger health benchmark for easy implementation and evaluation of SOTA diagnostic models for 10+ diseases. If you are interested, keep an eye on the [SpeechBrain Benchmark](https://github.com/speechbrain/benchmarks) where we will be releasing our scripts.
 
 # 📧 Contact
 
-For questions or inquiries, you can reach the author Yi Zhu at ([yi.zhu@inrs.ca](mailto:yi.zhu@inrs.ca)).
+For questions or inquiries, feel free to open an issue or you can reach the author Yi Zhu at ([yi.zhu@inrs.ca](mailto:yi.zhu@inrs.ca)).
 <!-- ############################################################################################################### -->
 # 📖 Citing
 

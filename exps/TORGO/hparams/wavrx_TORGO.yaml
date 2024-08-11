@@ -51,21 +51,21 @@ dataloader_options:
     drop_last: True
 
 
-# Added noise and reverb come from OpenRIR dataset, automatically
-# downloaded and prepared with this Environmental Corruption class.
-env_corrupt: !new:speechbrain.lobes.augment.EnvCorrupt
-    openrir_folder: !ref <rir_folder>
-    babble_prob: 0.0
-    reverb_prob: 1.0
-    noise_prob: 1.0
-    noise_snr_low: 0
-    noise_snr_high: 15
+# # Added noise and reverb come from OpenRIR dataset, automatically
+# # downloaded and prepared with this Environmental Corruption class.
+# env_corrupt: !new:speechbrain.lobes.augment.EnvCorrupt
+#     openrir_folder: !ref <rir_folder>
+#     babble_prob: 0.0
+#     reverb_prob: 1.0
+#     noise_prob: 1.0
+#     noise_snr_low: 0
+#     noise_snr_high: 15
 
-# Adds speech change + time and frequency dropouts (time-domain implementation)
-# # A small speed change help to improve the performance of speaker-id as well.
-augmentation: !new:speechbrain.lobes.augment.TimeDomainSpecAugment
-    sample_rate: !ref <sample_rate>
-    speeds: [95, 100, 105]
+# # Adds speech change + time and frequency dropouts (time-domain implementation)
+# # # A small speed change help to improve the performance of speaker-id as well.
+# augmentation: !new:speechbrain.lobes.augment.TimeDomainSpecAugment
+#     sample_rate: !ref <sample_rate>
+#     speeds: [95, 100, 105]
 
 # model hypeparameters
 model: !new:wavrx.WavRx

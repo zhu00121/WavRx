@@ -218,6 +218,33 @@ class WavRx(nn.Module):
         if return_sum:
             weighted_feature = weighted_feature.sum(dim=1)
         return weighted_feature
+    
+    def get_health_embd(self, x):
+        self.eval()
+        with torch.no_grad():
+            # Upstream encoder processing
+            input_values = self.processor(x, sampling_rate=16000, return_tensors="pt").input_values[0]
+            input_values = input_values.to(device=x.device, dtype=x.dtype)
+            features = self.feature_extractor(input_values, output_hidden_states=True)
+            features = torch.stack(features.hidden_states[1:],dim=1) 
+            B,L,T,F = features.shape # (batch, layer, time, features)
+
+            # temporal branch:
+            feat_t = self.weight_layer(features,branch='temporal',return_sum=True) # (batch, time, features)
+            feat_t = feat_t.permute(0,2,1)
+            feat_t = self.pooling_layer_t(feat_t).squeeze(-1)
+
+            # dynamics branch:
+            features = features.view(B*L,T,F)
+            feat_x = self.dynamics(features)
+            feat_x = feat_x.permute(0,2,1) # (B*L, F, freq)
+            feat_x = feat_x.view(B,L,F,feat_x.shape[2])
+            feat_x = self.weight_layer(feat_x,branch='dynamics',return_sum=True)
+            feat_x = self.pooling_layer_x(feat_x).squeeze(-1)
+
+            # passing through the first FC layer in the classification head
+            output = self.fc[0](torch.cat((feat_t,feat_x),axis=-1))
+        return output
 
 ##############################################
 

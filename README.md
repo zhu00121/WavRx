@@ -45,7 +45,7 @@ We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environ
    ```
 2. Create a virtual env for the repo
    ```
-   python3.10.13 -m <NAME_YOUR_VENV>
+   python3.10.13 -m venv <NAME_YOUR_VENV>
    source <NAME_YOUR_VENV>/bin/activate
    ```
 3. Install dependencies:

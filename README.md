@@ -43,11 +43,15 @@ We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environ
    git clone https://github.com/zhu00121/WavRx
    cd WavRx
    ```
-2. Install dependencies:
+2. Create a virtual env for the repo
+   ```
+   python3.10.13 -m <NAME_YOUR_VENV>
+   source <NAME_YOUR_VENV>/bin/activate
+   ```
+3. Install dependencies:
     ```
     pip install -r requirements.txt
     ```
-   These commands will install the dependencies for using WavRx. 
 
 # 🌟 Pretrained Model Backbones (to be released on HG)
 Note that some employed datasets are subject to confidentiality agreement, this restriction may also apply to the pretrained model weights. We are currently working on making the pretrained backbones open-source on HuggingFace.

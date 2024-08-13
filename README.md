@@ -63,16 +63,18 @@ Note that some employed datasets are subject to confidentiality agreement, this 
 | WavRx-dysarthria                              | [Nemours]()                                                    | [huggingface.co/](https://huggingface.co/)                    |
 | WavRx-cancer                                  | [NCSC]()                                                   | [huggingface.co/](https://huggingface.co/)     |
 
-# 👷 Model Training Recipes
+# 👷 Data download and preparation
 
-| **Dataset**                              | **Task**                             | **Link to training recipes** | **Link to data preparation scripts**                                                                       |
+Majority of the datasets require agreements to be signed for obtaining access. Please refer to the **Download links** in the table below to go to the data download pages and follows their instructions to obtain the data. Once the data are downloaded, refer to the data prepration guide which helps to prepare the data in the required format.
+
+| **Dataset**                              | **Task**                             | **Download links** | **Data preparation guide**                                                                       |
 |------------------------------------------|--------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------|
-| Cambridge-Task1 | Respiraty Symptom Detection  | [link]()                                               |[link]()|
-| Cambridge-EN                         | Respiraty Symptom                   | [link]()|[link]()|
-| DiCOVA2                                | COVID-19  | [link]()| [link]() |                  
-| TORGO                                  | Dysarthria   | [link]()| [link]() |
-| Nemours                          | Dysarthria | [link]()| [link]()|
-| NCSC                                   | Cervical Cancer  | [link]()| [link]() |
+| Cambridge-Task1 | Respiraty Symptom Detection  | [link]()                                               |``exps/Cambridge_Respiratory/Guide.ipynb``|
+| Cambridge-EN                         | Respiraty Symptom                   | [link]()|``exps/Cambridge_Respiratory_Task1/Guide.ipynb``|
+| DiCOVA2                                | COVID-19  | [link]()| ``exps/DiCOVA2/Guide.ipynb`` |                  
+| TORGO                                  | Dysarthria   | [link]()| ``exps/TORGO/Guide.ipynb`` |
+| Nemours                          | Dysarthria | [link]()| ``exps/TORGO/Nemours.ipynb`` |
+| NCSC                                   | Cervical Cancer  | [link]()| ``exps/NCSC/Guide.ipynb`` |
 
 # ▶️ Quickstart
 

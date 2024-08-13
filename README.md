@@ -4,7 +4,7 @@
 
 # WavRx - a Speech Health Diagnostic Model
 
-This repository provides scripts for running a new SOTA speech health diagnostic model *WavRx*. *WavRx* obtains SOTA performance on 6 datasets covering 4 different pathologies, and shows good zero-shot generalizability. The health embeddings encoded by *WavRx* are shown to carry minimal speaker identity attributes.
+This repository provides scripts for running a new SOTA speech health diagnostic model *WavRx*. *WavRx* obtains SOTA performance on **6 datasets covering 4 different pathologies**, and shows good **zero-shot generalizability**. The health embeddings encoded by *WavRx* are shown to carry **minimal speaker identity attributes**.
 
 This repository can be used to (1) conduct training of *WavRx* on the 6 datasets; (2) run inference using the pretrained *WavRx* backbones; (3) train and test your self-customized models on the 6 datasets without efforts needed for editing training/evaluation scripts.
 
@@ -69,12 +69,12 @@ Majority of the datasets require agreements to be signed for obtaining access. P
 
 | **Dataset**                              | **Task**                             | **Download links** | **Data preparation guide**                                                                       |
 |------------------------------------------|--------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------|
-| Cambridge-Task1 | Respiraty Symptom Detection  | [link]()                                               |``exps/Cambridge_Respiratory/Guide.ipynb``|
-| Cambridge-EN                         | Respiraty Symptom                   | [link]()|``exps/Cambridge_Respiratory_Task1/Guide.ipynb``|
-| DiCOVA2                                | COVID-19  | [link]()| ``exps/DiCOVA2/Guide.ipynb`` |                  
-| TORGO                                  | Dysarthria   | [link]()| ``exps/TORGO/Guide.ipynb`` |
-| Nemours                          | Dysarthria | [link]()| ``exps/TORGO/Guide.ipynb`` |
-| NCSC                                   | Cervical Cancer  | [link]()| ``exps/NCSC/Guide.ipynb`` |
+| Cambridge-Task1 | Respiraty Symptom Detection  | [TBD]()                                               |``exps/Cambridge_Respiratory/Guide.ipynb``|
+| Cambridge-EN                         | Respiraty Symptom                   | [TBD]()|``exps/Cambridge_Respiratory_Task1/Guide.ipynb``|
+| DiCOVA2                                | COVID-19  | [TBD]()| ``exps/DiCOVA2/Guide.ipynb`` |                  
+| TORGO                                  | Dysarthria   | [Link](https://www.cs.toronto.edu/~complingweb/data/TORGO/torgo.html)| ``exps/TORGO/Guide.ipynb`` |
+| Nemours                          | Dysarthria | [TBD]()| ``exps/Nemours/Guide.ipynb`` |
+| NCSC                                   | Cervical Cancer  | [TBD]()| ``exps/NCSC/Guide.ipynb`` |
 
 # ▶️ Quickstart
 

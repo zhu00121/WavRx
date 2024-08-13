@@ -73,7 +73,7 @@ Majority of the datasets require agreements to be signed for obtaining access. P
 | Cambridge-EN                         | Respiraty Symptom                   | [link]()|``exps/Cambridge_Respiratory_Task1/Guide.ipynb``|
 | DiCOVA2                                | COVID-19  | [link]()| ``exps/DiCOVA2/Guide.ipynb`` |                  
 | TORGO                                  | Dysarthria   | [link]()| ``exps/TORGO/Guide.ipynb`` |
-| Nemours                          | Dysarthria | [link]()| ``exps/TORGO/Nemours.ipynb`` |
+| Nemours                          | Dysarthria | [link]()| ``exps/TORGO/Guide.ipynb`` |
 | NCSC                                   | Cervical Cancer  | [link]()| ``exps/NCSC/Guide.ipynb`` |
 
 # ▶️ Quickstart

@@ -123,5 +123,5 @@ def unzip_audio_file(destination, audio_archive_path):
     Unzip the compressed audio folder.
     """
     if not os.path.exists(audio_archive_path):
-        raise ValueError("Audio zip file not found. Please refer to prep.ipynb first to prepare the zip file.")
+        raise ValueError("Audio zip file not found. Make sure the zip file is in the data folder.")
     shutil.unpack_archive(audio_archive_path, os.path.dirname(destination))

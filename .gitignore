@@ -1,1 +1,1 @@
-data_og/*/*.csv
+/data_og/**/*.csv

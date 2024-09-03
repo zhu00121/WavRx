@@ -74,7 +74,7 @@ Majority of the datasets require agreements to be signed for obtaining access. P
 | DiCOVA2                                | COVID-19  | Contact organizers of [challenge](https://dicovachallenge.github.io/#home)| ``exps/DiCOVA2/Guide.ipynb`` |                  
 | TORGO                                  | Dysarthria   | [Link](https://www.cs.toronto.edu/~complingweb/data/TORGO/torgo.html)| ``exps/TORGO/Guide.ipynb`` |
 | Nemours                          | Dysarthria | Contact author of [paper](https://ieeexplore.ieee.org/abstract/document/608020)| ``exps/Nemours/Guide.ipynb`` |
-| NCSC                                   | Cervical Cancer  | Contact author of [paper](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.isca-archive.org/interspeech_2012/schuller12_interspeech.pdf)| ``exps/NCSC/Guide.ipynb`` |
+| NCSC                                   | Cervical Cancer  | Contact author of [paper](https://www.isca-archive.org/interspeech_2012/schuller12_interspeech.pdf)| ``exps/NCSC/Guide.ipynb`` |
 
 # ▶️ Quickstart
 

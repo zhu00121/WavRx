@@ -69,12 +69,12 @@ Majority of the datasets require agreements to be signed for obtaining access. P
 
 | **Dataset**                              | **Task**                             | **Download links** | **Data preparation guide**                                                                       |
 |------------------------------------------|--------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------|
-| Cambridge-Task1 | Respiraty Symptom Detection  | [TBD]()                                               |``exps/Cambridge_Respiratory/Guide.ipynb``|
+| Cambridge-Task1 | Respiraty Symptom Detection  | Contact author of [paper](https://www.covid-19-sounds.org/en/blog/neurips_dataset.html)                                               |``exps/Cambridge_Respiratory/Guide.ipynb``|
 | Cambridge-EN                         | Respiraty Symptom                   | [TBD]()|``exps/Cambridge_Respiratory_Task1/Guide.ipynb``|
-| DiCOVA2                                | COVID-19  | [TBD]()| ``exps/DiCOVA2/Guide.ipynb`` |                  
+| DiCOVA2                                | COVID-19  | Contact organizers of [challenge](https://dicovachallenge.github.io/#home)| ``exps/DiCOVA2/Guide.ipynb`` |                  
 | TORGO                                  | Dysarthria   | [Link](https://www.cs.toronto.edu/~complingweb/data/TORGO/torgo.html)| ``exps/TORGO/Guide.ipynb`` |
-| Nemours                          | Dysarthria | [TBD]()| ``exps/Nemours/Guide.ipynb`` |
-| NCSC                                   | Cervical Cancer  | [TBD]()| ``exps/NCSC/Guide.ipynb`` |
+| Nemours                          | Dysarthria | Contact author of [paper](https://ieeexplore.ieee.org/abstract/document/608020)| ``exps/Nemours/Guide.ipynb`` |
+| NCSC                                   | Cervical Cancer  | Contact author of [paper](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.isca-archive.org/interspeech_2012/schuller12_interspeech.pdf)| ``exps/NCSC/Guide.ipynb`` |
 
 # ▶️ Quickstart
 

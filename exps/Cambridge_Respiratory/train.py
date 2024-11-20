@@ -3,7 +3,7 @@
 This is a customized dataset from the Cambridge COVID sound database.
 
 To run this recipe, do the following:
-> python train.py hparams/train.yaml
+> python train.py hparams/wavrx_resp.yaml
 
 To read the code, first scroll to the bottom to see the "main" code.
 This gives a high-level overview of what is going on, while the

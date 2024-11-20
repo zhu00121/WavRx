@@ -10,9 +10,9 @@ data_folder: ./data_og
 dataset: Nemours
 
 # original audio and label file paths
-wav_folder: !ref <data_folder>/<dataset>/wav/
-audio_archive_path: !ref <data_folder>/<dataset>/wav/Nemours.tar.gz
-metadata_path: !ref <data_folder>/<dataset>/metadata/Nemours-metadata.csv
+wav_folder: !ref <data_folder>/<dataset>/
+audio_archive_path: !ref <data_folder>/<dataset>/wav/YOUR_ARCHIVE
+metadata_path: !ref <data_folder>/<dataset>/Nemours-metadata.csv
 
 # data i/o paths
 output_folder: !ref ./exps/<task>/brain-logs

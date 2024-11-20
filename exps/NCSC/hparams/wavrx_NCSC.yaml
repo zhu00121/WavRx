@@ -10,9 +10,9 @@ data_folder: ./data_og
 dataset: NCSC
 
 # original audio and label file paths
-wav_folder: !ref <data_folder>/<dataset>/wav/
-audio_archive_path: !ref <data_folder>/<dataset>/wav/NCSC.tar.gz
-metadata_path: !ref <data_folder>/<dataset>/metadata/NCSC-metadata.csv
+wav_folder: !ref <data_folder>/<dataset>/
+audio_archive_path: !ref <data_folder>/<dataset>/YOUR_ARCHIVE
+metadata_path: !ref <data_folder>/<dataset>/NCSC-metadata.csv
 
 # data i/o paths
 output_folder: !ref ./exps/<task>/brain-logs

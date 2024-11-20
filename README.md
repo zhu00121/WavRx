@@ -66,7 +66,7 @@ Note that some employed datasets are subject to confidentiality agreement, this 
 
 # 👷 Data download and preparation
 
-Majority of the datasets require agreements to be signed for obtaining access. Please refer to the **Download links** in the table below to go to the data download pages and follows their instructions to obtain the data. Once the data are downloaded, refer to the data prepration guide `data_prep.md` which helps to prepare the data in the required format.
+Majority of the datasets require agreements to be signed for obtaining access. Please refer to the **Download links** in the table below to obtain data. Most of them require contacting authors for data downloading. Once the data are downloaded, refer to the data prepration guide `data_prep.md` which helps to prepare the data in the required format.
 
 | **Dataset** | **Task**              | **Download links**                                                                        |
 | ----------------- | --------------------------- | ----------------------------------------------------------------------------------------------- |

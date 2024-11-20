@@ -3,7 +3,7 @@
 This dataset was used for `task1' in the Cambridge COVID sound database paper, we use the same partition here.
 
 To run this recipe, do the following:
-> python train.py hparams/train.yaml
+> python train.py hparams/wavrx_task1.yaml
 
 To read the code, first scroll to the bottom to see the "main" code.
 This gives a high-level overview of what is going on, while the

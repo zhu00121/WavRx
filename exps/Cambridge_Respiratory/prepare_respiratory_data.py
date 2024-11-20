@@ -120,7 +120,7 @@ def dataframe_to_json(df,save_path):
         utt_id = Path(row['voice-path-new']).stem # returns the name (without extension) E.g., '00000','00010'
         examples[utt_id] = {"ID": utt_id,
                             "file_path": row['voice-path-new'], 
-                            "symptom-label": row['Symptom-label'],
+                            "symptom-label": row['label'],
                             "symptom": row['Symptoms'],
                             "length": torchaudio.info(row['voice-path-new']).num_frames}
         

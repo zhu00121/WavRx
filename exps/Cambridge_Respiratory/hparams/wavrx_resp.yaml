@@ -10,9 +10,9 @@ data_folder: ./data_og
 dataset: Cambridge
 
 # original audio and label file paths
-wav_folder: !ref <data_folder>/<dataset>/wav/EN
-audio_archive_path: !ref <data_folder>/<dataset>/wav/EN.zip
-metadata_path: !ref <data_folder>/<dataset>/metadata/EN-metadata.csv
+wav_folder: !ref <data_folder>/<dataset>/
+audio_archive_path: !ref <data_folder>/<dataset>/YOUR_ARCHIVE.zip # change this to your own path
+metadata_path: !ref <data_folder>/<dataset>/Cambridge-EN-metadata.csv
 
 # output folder: this is where the training log and checkpoints will be saved
 output_folder: !ref ./exps/<task>/brain-logs
@@ -53,23 +53,6 @@ n_classes: 1
 dataloader_options:
     batch_size: !ref <batch_size>
     drop_last: True
-
-
-# # Added noise and reverb come from OpenRIR dataset, automatically
-# # downloaded and prepared with this Environmental Corruption class.
-# env_corrupt: !new:speechbrain.lobes.augment.EnvCorrupt
-#     openrir_folder: !ref <rir_folder>
-#     babble_prob: 0.0
-#     reverb_prob: 1.0
-#     noise_prob: 1.0
-#     noise_snr_low: 0
-#     noise_snr_high: 15
-
-# # Adds speech change + time and frequency dropouts (time-domain implementation)
-# # # A small speed change help to improve the performance of speaker-id as well.
-# augmentation: !new:speechbrain.lobes.augment.TimeDomainSpecAugment
-#     sample_rate: !ref <sample_rate>
-#     speeds: [95, 100, 105]
 
 
 # model hyper-parameters

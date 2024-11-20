@@ -37,7 +37,6 @@ For detailed information, refer to [paper](https://arxiv.org/abs/2406.18731):
 
 We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environment for *WavRx*, follow these steps:
 
-
 1. Clone the repository:
    ```shell
    git clone https://github.com/zhu00121/WavRx
@@ -49,61 +48,62 @@ We use *PyTorch* and *SpeechBrain* as the main frameworks. To set up the environ
    source <NAME_YOUR_VENV>/bin/activate
    ```
 3. Install dependencies:
-    ```
-    pip install -r requirements.txt
-    ```
+   ```
+   pip install -r requirements.txt
+   ```
 
 # 🌟 Pretrained Model Backbones (to be released on HG)
+
 Note that some employed datasets are subject to confidentiality agreement, this restriction may also apply to the pretrained model weights. We are currently working on making the pretrained backbones open-source on HuggingFace.
-| **Model**                                                                 | **Dataset**                                                                                       | **Repo**                                                         |
-|--------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
-| WavRx-respiratory                      | [Cambridge COVID-19 Sound]()                                                                                     | [huggingface.co/](https://huggingface.co/)  |
-| WavRx-COVID                       | [DiCOVA2]()                                                                                     | [huggingface.co/](https://huggingface.co/)  |
-| WavRx-dysarthria                    | [TORGO]()                                                                                     | [huggingface.co/](https://huggingface.co/)  |
-| WavRx-dysarthria                              | [Nemours]()                                                    | [huggingface.co/](https://huggingface.co/)                    |
-| WavRx-cancer                                  | [NCSC]()                                                   | [huggingface.co/](https://huggingface.co/)     |
+
+| **Model**   | **Dataset**         | **Repo**                          |
+| ----------------- | ------------------------- | --------------------------------------- |
+| WavRx-respiratory | [Cambridge COVID-19 Sound]() | [huggingface.co/](https://huggingface.co/) |
+| WavRx-COVID       | [DiCOVA2]()                  | [huggingface.co/](https://huggingface.co/) |
+| WavRx-dysarthria  | [TORGO]()                    | [huggingface.co/](https://huggingface.co/) |
+| WavRx-dysarthria  | [Nemours]()                  | [huggingface.co/](https://huggingface.co/) |
+| WavRx-cancer      | [NCSC]()                     | [huggingface.co/](https://huggingface.co/) |
 
 # 👷 Data download and preparation
 
-Majority of the datasets require agreements to be signed for obtaining access. Please refer to the **Download links** in the table below to go to the data download pages and follows their instructions to obtain the data. Once the data are downloaded, refer to the data prepration guide which helps to prepare the data in the required format.
+Majority of the datasets require agreements to be signed for obtaining access. Please refer to the **Download links** in the table below to go to the data download pages and follows their instructions to obtain the data. Once the data are downloaded, refer to the data prepration guide `data_prep.md` which helps to prepare the data in the required format.
 
-| **Dataset**                              | **Task**                             | **Download links** | **Data preparation guide**                                                                       |
-|------------------------------------------|--------------------------------------|----------------------------------------------------------------------------------------|--------------------------------------|
-| Cambridge-Task1 | Respiraty Symptom Detection  | Contact author of [paper](https://www.covid-19-sounds.org/en/blog/neurips_dataset.html)                                               |``exps/Cambridge_Respiratory/Guide.ipynb``|
-| Cambridge-EN                         | Respiraty Symptom                   | [TBD]()|``exps/Cambridge_Respiratory_Task1/Guide.ipynb``|
-| DiCOVA2                                | COVID-19  | Contact organizers of [challenge](https://dicovachallenge.github.io/#home)| ``exps/DiCOVA2/Guide.ipynb`` |                  
-| TORGO                                  | Dysarthria   | [Link](https://www.cs.toronto.edu/~complingweb/data/TORGO/torgo.html)| ``exps/TORGO/Guide.ipynb`` |
-| Nemours                          | Dysarthria | Contact author of [paper](https://ieeexplore.ieee.org/abstract/document/608020)| ``exps/Nemours/Guide.ipynb`` |
-| NCSC                                   | Cervical Cancer  | Contact author of [paper](https://www.isca-archive.org/interspeech_2012/schuller12_interspeech.pdf)| ``exps/NCSC/Guide.ipynb`` |
+| **Dataset** | **Task**              | **Download links**                                                                        |
+| ----------------- | --------------------------- | ----------------------------------------------------------------------------------------------- |
+| Cambridge-Task1   | Respiraty Symptom Detection | Contact author of[paper](https://www.covid-19-sounds.org/en/blog/neurips_dataset.html)             |
+| Cambridge-EN      | Respiraty Symptom           | Contact author of[paper](https://www.covid-19-sounds.org/en/blog/neurips_dataset.html)             |
+| DiCOVA2           | COVID-19                    | Contact organizers of[challenge](https://dicovachallenge.github.io/#home)                          |
+| TORGO             | Dysarthria                  | [Link](https://www.cs.toronto.edu/~complingweb/data/TORGO/torgo.html)                              |
+| Nemours           | Dysarthria                  | Contact author of[paper](https://ieeexplore.ieee.org/abstract/document/608020)                     |
+| NCSC              | Cervical Cancer             | Contact author of[paper](https://www.isca-archive.org/interspeech_2012/schuller12_interspeech.pdf) |
 
 # ▶️ Quickstart
 
 ## Running a single task
-Since each dataset has a different dataset structure with the corresponding partition, the training receipes are therefore stored separately in different folders. *Links* in the table above can be used to locate the corresponding recipes for a given dataset. 
+
+Since each dataset has a different dataset structure with the corresponding partition, the training receipes are therefore stored separately in different folders. *Links* in the table above can be used to locate the corresponding recipes for a given dataset.
 
 The steps for training *WavRx* (or your own model) are as follows:
 
 1. Medical data are hard to access and they typically do not have similar data structures. We make this easy for you. Use the **Link to data preparation scripts** to see where to download the data files, and how to prepare each dataset in the required format.
-
 2. [Optional only if you want to train your own model] Place the code of your model in the ``model`` folder, it needs to have 1 output neuron (without sigmoid).
-
 3. Check the hyperparameter file at ``exps/<DATASET>/hparams/wavrx_<DATASET>.yaml``. Modify the variables if needed. We provide a detailed guidance in ``demos/demo_hparam.md`` where we walk through the hyperparam file and demonstrate how to modify it for your own usage. If you simply want to replicate our results, there is no need to change it.
-
 4. The ``train.py`` does NOT need to be edited. Unless you want to change the training strategy or the loss function (i.e., Supervised training with BCEwithlogits loss). All the hyperparameters and the input models are controlled by modifying the hyperparam file. This helps to ensure that models are compared in a fair manner.
-
 5. Initiate training by calling ``python train.py hparams/wavrx_<DATASET>.yaml``. The test evaluation will be automatically conducted at the end of training using the best checkpoint with the highest F1 score. The results will be automatically saved.
-
 6. Repeat step-5 for each dataset, results will be saved independently in the corresponding `exp/<DATASET>` folder.
 
 😎 Voila! Enjoy your model training 😎
 
 ## Running multiple tasks in one-shot
+
 Currently the repository is not built for running multiple tasks in one-shot, while this can be done by wrapping them in one shell script. However, such function will be made available with our ongoing health benchmark project - a larger health benchmark for easy implementation and evaluation of SOTA diagnostic models for 10+ diseases. If you are interested, keep an eye on the [SpeechBrain Benchmark](https://github.com/speechbrain/benchmarks) where we will be releasing our scripts.
 
 # 📧 Contact
 
 For questions or inquiries, feel free to open an issue or you can reach the author Yi Zhu at ([yi.zhu@inrs.ca](mailto:yi.zhu@inrs.ca)).
+
 <!-- ############################################################################################################### -->
+
 # 📖 Citing
 
 If you use *WavRx* and/or its backbones and/or tge training recipes, please cite:
